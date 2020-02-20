@@ -30,7 +30,7 @@ router.use('/about', checkAuth, (req, res, next) => {
 router.use('/contact', checkAuth, contact)
 
 //Authentication Route
-router.use('/auth', checkAuth, auth)
+router.use('/auth', auth)
 
 //User Routes
 router.use('/user', checkAuth, verify, user)
