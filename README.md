@@ -1,5 +1,5 @@
 # Notes Sharing WebApp
-To install and use do the following
+To install all dependencies and use do the following
 ```
 npm install
 ```
