@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
       res.render('index', {
         notes,
         userData: req.userData
-        })
+      })
     })
     .catch(err => {
       console.log(err)

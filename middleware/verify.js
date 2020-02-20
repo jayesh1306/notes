@@ -1,25 +1,25 @@
 const User = require('../models/User')
 
 module.exports = (req, res, next) => {
-  try {
-    User.find({
+  if (!req.userData) {
+    req.flash('error_msg', 'Not Logged In...Please log in to view the source')
+    res.redirect('/auth/login')
+  } else {
+    User.findOne({
       $or: [{ email: req.userData.email }, { contact: req.userData.email }]
     })
       .then(users => {
-        if (users[0].verified == true) {
-          next()
+        if (users.verified == false) {
+          console.log(users.verified)
+          req.flash('error_msg', `Account Not Verified, Enter below email and verify. Link will be valid for 3 minutes only`)
+          res.redirect('/auth/sendEmail');
         } else {
-          req.flash('error_msg', 'Account Not Verified')
-          res.redirect('/auth/login')
+          next()
         }
       })
       .catch(err => {
         req.flash('error_msg', 'User Not Regsitered')
         res.redirect('/error')
       })
-  } catch (error) {
-    req.flash('error_msg', error)
-    res.redirect('/error')
   }
-  next()
-}
+} 

@@ -11,9 +11,7 @@ let transporter = nodemailer.createTransport({
 })
 
 exports.sendEmail = (email, req) => {
-  console.log(req.body)
   if (email) {
-    console.log(email)
     const token = jwt.sign(
       {
         email: email
@@ -30,7 +28,7 @@ exports.sendEmail = (email, req) => {
           from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',
           to: email,
           subject: 'Verification Link',
-          html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/user/verify/${token}'>Click</a>`
+          html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
         },
         (err, data) => {
           if (err) {

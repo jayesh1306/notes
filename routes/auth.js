@@ -24,8 +24,8 @@ router.post('/login', (req, res, next) => {
   db.getUser(username)
     .then(user => {
       if (user.length < 1) {
-        req.flash('error_msg', 'No User found')
-        res.redire('/auth/register')
+        req.flash('error_msg', 'Account Not Registered  ..!!')
+        res.redirect('/auth/register')
       } else {
         const token = jwt.sign(
           {
@@ -100,6 +100,39 @@ router.post('/register', (req, res, next) => {
     })
 })
 
+router.get('/sendEmail', (req, res, next) => {
+  res.render('authentication/email', {
+    userData: req.userData
+  })
+})
+
+router.post('/sendEmail', (req, res, next) => {
+  //Email Service
+  emailService
+    .sendEmail(req.body.email)
+    .then(info => {
+      db.getUser(req.body.email)
+        .then(user => {
+          req.flash(
+            'success_msg',
+            'Sent Email, Please Verify Email'
+          )
+          res.redirect('/auth/login')
+        })
+        .catch(err => {
+          req.flash('error_msg', err.message)
+          res.redirect('/error')
+        })
+    })
+    .catch(err => {
+      req.flash(
+        'error_msg',
+        'Something Went Wrong...Please try again in Sometime'
+      )
+      res.redirect('/auth/login')
+    })
+})
+
 router.get('/logout', (req, res, next) => {
   localStorage.clear()
   req.flash('success_msg', 'Successfully Logged Out')
@@ -116,7 +149,8 @@ router.get('/verify/:token', (req, res, next) => {
       .then(users => {
         User.updateOne({ email: decoded.email }, { verified: true })
           .then(user => {
-            res.status(200).json({ success: 'User Verified' })
+            req.flash('success_msg', 'User Verified. Please log in ')
+            res.redirect('/auth/login')
           })
           .catch(err => {
             res.status(401).json({ failed: err.message })
