@@ -14,8 +14,6 @@ exports.getAllUser = req => {
 }
 
 exports.getUser = username => {
-  console.log(username)
-
   return new Promise((resolve, reject, email, contact) => {
     User.find(
       {
@@ -39,6 +37,30 @@ exports.getAllNotes = () => {
         reject(err)
       } else {
         resolve(notes)
+      }
+    })
+  })
+}
+
+exports.getNote = (id) => {
+  return new Promise((resolve, reject) => {
+    Note.findOne({ _id: id }, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data);
+      }
+    })
+  })
+}
+
+exports.updateUser = (user, data) => {
+  return new Promise((resolve, reject) => {
+    User.updateOne({ email: user }, { notesId: data }, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
       }
     })
   })

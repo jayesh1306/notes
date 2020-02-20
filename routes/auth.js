@@ -48,9 +48,13 @@ router.post('/login', (req, res, next) => {
 })
 
 router.get('/register', (req, res, next) => {
-  res.render('authentication/register', {
-    userData: req.userData
-  })
+  if (req.userData) {
+    res.redirect('/user/dashboard')
+  } else {
+    res.render('authentication/register', {
+      userData: req.userData
+    })
+  }
 })
 
 router.post('/register', (req, res, next) => {
@@ -164,13 +168,5 @@ router.get('/verify/:token', (req, res, next) => {
   }
 })
 
-router.post('/addNotes', (req, res, next) => {
-  var notes = Notes({
-    department: 'Computer Science',
-    semester: 2,
-    subject: 'Computer Networks'
-  })
-  notes.save()
-})
 
 module.exports = router

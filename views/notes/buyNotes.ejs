@@ -1,0 +1,52 @@
+<div class="container mt-5">
+    <div class="col-md-8 col-xs-12 col-sm-6 m-auto">
+        <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+            <h3>Notes Details</h3>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-4">
+                    <label style="font-weight:bold;">Department </label>
+                </div>
+                <div class="col-md-8 col-6">
+                    <%= note.department%>
+                </div>
+            </div>
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-4">
+                    <label style="font-weight:bold;">Subject </label>
+                </div>
+                <div class="col-md-8 col-6">
+                    <%=note.subject%>
+                </div>
+            </div>
+            <hr />
+
+
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-4">
+                    <label style="font-weight:bold;">Semester </label>
+                </div>
+                <div class="col-md-8 col-6">
+                    <%=note.semester%>
+                </div>
+            </div>
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-4">
+                    <label style="font-weight:bold;">Enter address and time where you want to take notes </label>
+                </div>
+                <div class="col-md-8 col-6">
+                    <form action="/user/notes/<%=note._id%>/buy" method="post">
+                        <input type="text" class="form-control" name="address">
+
+                </div>
+            </div>
+            <hr />
+            <button class="btn btn-primary" onclick="return confirm('Confirm Sending Request')">Send</button>
+            </form>
+        </div>
+    </div>
+</div>

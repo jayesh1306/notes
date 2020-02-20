@@ -12,6 +12,10 @@ const noteSchema = new mongoose.Schema({
   subject: {
     type: String,
     required: true
+  },
+  price: {
+    type: Number,
+    default: 0
   }
 })
 

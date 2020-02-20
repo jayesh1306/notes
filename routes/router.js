@@ -9,6 +9,7 @@ const home = require('./homePage')
 const auth = require('./auth')
 const user = require('./user')
 const contact = require('./contact')
+const notes = require('./notes')
 const router = express.Router()
 
 //Error Route
@@ -26,13 +27,14 @@ router.use('/about', checkAuth, (req, res, next) => {
 })
 
 //Contact Route
-router.use('/contact', contact)
+router.use('/contact', checkAuth, contact)
 
 //Authentication Route
-router.use('/auth', auth)
+router.use('/auth', checkAuth, auth)
 
 //User Routes
 router.use('/user', checkAuth, verify, user)
+router.use('/notes', checkAuth, notes);
 router.use('/', checkAuth, home)
 
 //Home Route

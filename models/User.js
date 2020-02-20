@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -20,7 +21,13 @@ const userSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false
-  }
+  },
+  notesId: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Notes'
+    }
+  ]
 })
 
 module.exports = mongoose.model('User', userSchema)
