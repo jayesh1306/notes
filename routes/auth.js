@@ -2,6 +2,7 @@ const express = require('express')
 const localStorage = require('localStorage')
 const jwt = require('jsonwebtoken')
 const emailService = require('../services/email')
+const smsService = require('../services/twilio');
 const db = require('../db/queries')
 const User = require('../models/User')
 const Notes = require('../models/Notes')
@@ -27,6 +28,7 @@ router.post('/login', (req, res, next) => {
         req.flash('error_msg', 'Account Not Registered  ..!!')
         res.redirect('/auth/register')
       } else {
+
         const token = jwt.sign(
           {
             email: username,
@@ -76,11 +78,20 @@ router.post('/register', (req, res, next) => {
             userData
               .save()
               .then(user => {
-                req.flash(
-                  'success_msg',
-                  'Account Registered, Please Verify Email'
-                )
-                res.redirect('/auth/register')
+                smsService.sendSMS(req.body.contact)
+                  .then(data => {
+                    req.flash(
+                      'success_msg',
+                      'Account Registered, Please Verify Email and enter code here that we have sent to your mobile number'
+                    );
+                    localStorage.setItem('mobile', '+91' + req.body.contact)
+                    res.redirect('/auth/mobileVerification')
+                  })
+                  .catch(error => {
+                    console.log(error)
+                    req.flash('error_msg', 'Cannot Send SMS..Please try again Logging In');
+                    res.redirect('/auth/login');
+                  })
               })
               .catch(err => {
                 req.flash('error_msg', err.message)
@@ -88,6 +99,7 @@ router.post('/register', (req, res, next) => {
               })
           })
           .catch(err => {
+            console.log(err)
             req.flash(
               'error_msg',
               'Could not Send Email...Please try again in Sometime'
@@ -143,6 +155,57 @@ router.get('/logout', (req, res, next) => {
   res.redirect('/auth/login')
 })
 
+router.get('/mobile', (req, res, next) => {
+  res.render('authentication/mobile', {
+    userData: req.userData
+  })
+})
+
+router.get('/mobileVerification', (req, res, next) => {
+  if (localStorage.getItem('mobile') == null) {
+    localStorage.setItem('mobile', '+91' + req.query.contact)
+    smsService.sendSMS(req.query.contact)
+      .then(datd => {
+        res.render('authentication/mobileVerify', {
+          userData: req.userData
+        })
+      })
+      .catch(err => {
+        req.flash('error_msg', err.message);
+        res.redirect('/auth/mobile')
+      })
+  } else {
+    res.render('authentication/mobileVerify', {
+      userData: req.userData
+    })
+  }
+})
+
+router.post('/mobileVerification', (req, res, next) => {
+  if (localStorage.getItem('mobile') && (req.body.code).length === 6) {
+    smsService.verifySms(req.body.code)
+      .then(data => {
+        if (data.status === "approved") {
+          var contact = localStorage.getItem('mobile');
+          var mobile = contact.substring(3);
+          User.updateOne({ contact: mobile }, { isMobileVerified: true })
+            .then(data => {
+              req.flash('success_msg', 'Mobile Number Verified');
+              res.redirect('/auth/login')
+            }).catch(error => {
+              req.flash('error_msg', 'Phone Number or Code is Invalid....Please try again log in')
+              res.redirect('/auth/login');
+            })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  } else {
+    req.flash('error_msg', 'Phone Number or Code is Invalid....Please try again log in')
+    res.redirect('/auth/login');
+  }
+})
+
 router.get('/verify/:token', (req, res, next) => {
   var token = localStorage.getItem('token')
 
@@ -168,5 +231,17 @@ router.get('/verify/:token', (req, res, next) => {
   }
 })
 
+router.post('/sendSMS', (req, res, next) => {
+  localStorage.setItem('mobile', '+91' + req.body.contact)
+  smsService.sendSMS(req.body.contact)
+    .then(data => {
+      req.flash('success_msg', 'Successfully Sent Message');
+      res.redirect('/auth/mobileVerification');
+    })
+    .catch(err => {
+      req.flash('error_msg', err.message);
+      res.redirect('/auth/mobile');
+    })
+})
 
 module.exports = router

@@ -10,9 +10,11 @@ module.exports = (req, res, next) => {
     })
       .then(users => {
         if (users.verified == false) {
-          console.log(users.verified)
           req.flash('error_msg', `Account Not Verified, Enter below email and verify. Link will be valid for 3 minutes only`)
           res.redirect('/auth/sendEmail');
+        } else if (users.isMobileVerified == false) {
+          req.flash('error_msg', 'Mobile Not Verified. Plese enter mobile number here to verify');
+          res.redirect('/auth/mobile');
         } else {
           next()
         }

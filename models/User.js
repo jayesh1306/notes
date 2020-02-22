@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
       type: Schema.Types.ObjectId,
       ref: 'Notes'
     }
-  ]
+  ],
+  isMobileVerified: {
+    type: Boolean,
+    default: false
+  }
 })
 
 module.exports = mongoose.model('User', userSchema)
