@@ -28,7 +28,7 @@ exports.sendEmail = (email, req) => {
           from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',
           to: email,
           subject: 'Verification Link',
-          html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
+          html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='https://notessapp.herokuapp.com//auth/verify/${token}'>Click</a>`
         },
         (err, data) => {
           if (err) {
