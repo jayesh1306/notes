@@ -1,52 +1,125 @@
+<script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-kRhEFx3juKLzCCjIVRLvmT7sXETaQvE&libraries=places"></script>
+<script>
+    var searchInput = 'search_input';
+
+    $(document).ready(function () {
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+            types: ['geocode'],
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var near_place = autocomplete.getPlace();
+            document.getElementById('loc_lat').value = near_place.geometry.location.lat();
+            document.getElementById('loc_long').value = near_place.geometry.location.lng();
+
+            document.getElementById('latitude_view').innerHTML = near_place.geometry.location.lat();
+            document.getElementById('longitude_view').innerHTML = near_place.geometry.location.lng();
+        });
+    });
+</script>
 <div class="container mt-5">
     <div class="col-md-8 col-xs-12 col-sm-6 m-auto">
         <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
             <h3>Notes Details</h3>
             <hr>
-            <div class="row">
-                <div class="col-sm-4 col-md-4 col-4">
-                    <label style="font-weight:bold;">Department </label>
+            <form action="/user/notes/<%=note._id%>/buy%>">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-4">
+                        <label style="font-weight:bold;">Department </label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <%= note.department%>
+                    </div>
                 </div>
-                <div class="col-md-8 col-6">
-                    <%= note.department%>
-                </div>
-            </div>
-            <hr />
+                <hr />
 
-            <div class="row">
-                <div class="col-sm-4 col-md-4 col-4">
-                    <label style="font-weight:bold;">Subject </label>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-4">
+                        <label style="font-weight:bold;">Subject </label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <%=note.subject%>
+                    </div>
                 </div>
-                <div class="col-md-8 col-6">
-                    <%=note.subject%>
-                </div>
-            </div>
-            <hr />
+                <hr />
 
 
-            <div class="row">
-                <div class="col-sm-4 col-md-4 col-4">
-                    <label style="font-weight:bold;">Semester </label>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-4">
+                        <label style="font-weight:bold;">Semester </label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <%=note.semester%>
+                    </div>
                 </div>
-                <div class="col-md-8 col-6">
-                    <%=note.semester%>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-4">
+                        <label style="font-weight:bold;">Date </label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <input type="date" name="date" class="form-control" id="date">
+                    </div>
                 </div>
-            </div>
-            <hr />
+                <hr />
 
-            <div class="row">
-                <div class="col-sm-4 col-md-4 col-4">
-                    <label style="font-weight:bold;">Enter address and time where you want to take notes </label>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-4">
+                        <label style="font-weight:bold;">Time </label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                        <input type="time" name="time" class="form-control" id="time">
+                    </div>
                 </div>
-                <div class="col-md-8 col-6">
-                    <form action="/user/notes/<%=note._id%>/buy" method="post">
-                        <input type="text" class="form-control" name="address">
-
+                <hr />
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <label for="address">Enter Address to Take Notes</label>
+                    </div>
+                    <div class="col-md-8 col-6 m-auto">
+                        <input type="text" class="form-control Autocomplete" name="address" id="search_input">
+                    </div>
                 </div>
-            </div>
-            <hr />
-            <button class="btn btn-primary" onclick="return confirm('Confirm Sending Request')">Send</button>
+                <hr />
+                <button class="btn btn-primary" onclick="return confirm('Confirm Sending Request')">Send</button>
             </form>
         </div>
     </div>
 </div>
+<!-- <script>
+    var map;
+    function showlocation() {
+        // One-shot position request.
+        navigator.geolocation.getCurrentPosition(callback);
+    }
+
+    function callback(position) {
+
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+
+        document.getElementById('latitude').innerHTML = lat;
+        document.getElementById('longitude').innerHTML = lon;
+
+        var latLong = new google.maps.LatLng(lat, lon);
+
+        var marker = new google.maps.Marker({
+            position: latLong
+        });
+
+        marker.setMap(map);
+        map.setZoom(8);
+        map.setCenter(marker.getPosition());
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-kRhEFx3juKLzCCjIVRLvmT7sXETaQvE&callback=initMap" async
+    defer></script> -->

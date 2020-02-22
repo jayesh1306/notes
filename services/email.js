@@ -43,8 +43,8 @@ exports.sendEmail = (email, req) => {
     return new Promise(async (resolve, reject) => {
       transporter.sendMail(
         {
-          from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',
-          to: req.body.email,
+          from: req.body.email,
+          to: `prajapatijayesh.beis.16@acharya.ac.in`,
           subject: 'Complaint from User : ' + req.body.name,
           html: req.body.msg
         },
