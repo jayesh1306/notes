@@ -74,7 +74,8 @@ exports.forgotPassword = email => {
       from: 'prajapatijayesh.beis.16@acharya.ac.in',
       to: email,
       subject: `Reset Password Link. Valid for 3 Minutes Only`,
-      html: `Click <a href="http://localhost:3000/auth/forgotPassword/${token}">here</a> to reset your password `
+      hrml: `Click <a href='https://notessapp.herokuapp.com/auth/forgotPassword/${token}'>Click</a> to reset Password`,
+      // html: `Click <a href="http://localhost:3000/auth/forgotPassword/${token}">here</a> to reset your password `
     }, (err, data) => {
       if (err) {
         reject(err)
