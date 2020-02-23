@@ -11,13 +11,9 @@ const sha256 = require('sha256')
 const router = express.Router()
 
 router.get('/login', (req, res, next) => {
-  if (localStorage.getItem('token') != null) {
-    res.redirect('/user/dashboard')
-  } else {
-    res.render('authentication/login', {
-      userData: req.userData
-    })
-  }
+  res.render('authentication/login', {
+    userData: req.userData
+  })
 })
 
 
