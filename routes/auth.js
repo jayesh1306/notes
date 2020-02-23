@@ -19,7 +19,7 @@ router.get('/login', (req, res, next) => {
     })
   }
 })
- 
+
 
 router.post('/login', (req, res, next) => {
   const { username, password } = req.body
@@ -28,8 +28,10 @@ router.post('/login', (req, res, next) => {
       if (user.length < 1) {
         req.flash('error_msg', 'Account Not Registered  ..!!')
         res.redirect('/auth/register')
+      } else if (sha256(password) != user[0].password) {
+        req.flash('error_msg', 'Incorrect Password');
+        res.redirect('/auth/login');
       } else {
-
         const token = jwt.sign(
           {
             email: username,
@@ -242,6 +244,66 @@ router.post('/sendSMS', (req, res, next) => {
     .catch(err => {
       req.flash('error_msg', err.message);
       res.redirect('/auth/mobile');
+    })
+})
+
+router.get('/forgotPassword', (req, res, next) => {
+  res.render('authentication/forgotPassword', {
+    userData: req.userData
+  })
+})
+
+router.post('/forgotPassword', (req, res, next) => {
+  emailService.forgotPassword(req.body.email)
+    .then(data => {
+      req.flash('success_msg', 'Link is sent to your email.Please click link and change password');
+      res.redirect('/auth/forgotPassword')
+    })
+    .catch(err => {
+      req.flash('error_msg', err.message);
+      res.redirect('/auth/forgotPassword');
+    })
+})
+
+router.get('/forgotPassword/:token', (req, res, next) => {
+  var decoded = jwt.verify(localStorage.getItem('token').split(" ")[1], 'secret');
+  console.log(decoded.exp, parseInt(Date.now() / 1000))
+  if (decoded.exp < parseInt(Date.now() / 1000)) {
+
+    req.flash('error_msg', 'Link is Expired. Please try Again');
+    res.redirect('/auth/forgotPassword');
+  } else {
+    db.getUser(decoded.email)
+      .then(users => {
+        if (users.length < 1) {
+          req.flash('error_msg', 'User Doesn\'t Exists. Please register First');
+          res.redirect('/auth/register')
+        } else {
+          res.render('authentication/changePassword', {
+            userData: req.userData
+          });
+        }
+      })
+      .catch(error => {
+        req.flash('error_msg', error.message);
+        res.redirect('/auth/forgotPassword');
+      })
+  }
+})
+
+router.post('/changePassword', (req, res, next) => {
+  var pass = sha256(req.body.password1);
+  var email = jwt.verify(localStorage.getItem('token').split(" ")[1], 'secret').email
+  console.log(email)
+  User.updateOne({ email: email }, { password: pass })
+    .then(user => {
+      console.log(user)
+      req.flash('success_msg', 'Password Changed Successfully');
+      res.redirect('/auth/login');
+    })
+    .catch(err => {
+      req.flash('error_msg', err.message);
+      res.redirect('/auth/forgotPassword')
     })
 })
 
