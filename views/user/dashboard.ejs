@@ -9,11 +9,6 @@
                             <div class="image-container">
                                 <img src="http://placehold.it/150x150" id="imgProfile"
                                     style="width: 150px; height: 150px" class="img-thumbnail" />
-                                <div class="middle">
-                                    <input type="button" class="btn btn-secondary" id="btnChangePicture"
-                                        value="Change" />
-                                    <input type="file" style="display: none;" id="profilePicture" name="file" />
-                                </div>
                             </div>
                             <div class="userData ml-3">
                                 <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a
@@ -36,9 +31,13 @@
                                         role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab"
-                                        href="#connectedServices" role="tab" aria-controls="connectedServices"
-                                        aria-selected="false">Connected Services</a>
+                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#addNotes"
+                                        role="tab" aria-controls="connectedServices" aria-selected="false">Add Notes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#notes"
+                                        role="tab" aria-controls="connectedServices" aria-selected="false">View Your
+                                        Sale Notes</a>
                                 </li>
                             </ul>
                             <div class="tab-content ml-1" id="myTabContent">
@@ -96,9 +95,46 @@
                                     <hr />
 
                                 </div>
-                                <div class="tab-pane fade" id="connectedServices" role="tabpanel"
+                                <div class="tab-pane fade" id="addNotes" role="tabpanel"
                                     aria-labelledby="ConnectedServices-tab">
-                                    Facebook, Google, Twitter Account that are connected to this account
+                                    <div class="container mt-5">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-8 col-sm-6 m-auto">
+                                                <form action="/user/addNotes" method="post">
+                                                    <div class="form-group">
+                                                        <label for="subject">Subject</label>
+                                                        <select name="subject" class="form-control" id="">
+                                                            <option value="Computer Networks">CN</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="department">Department</label>
+                                                        <select name="department" class="form-control" id="department">
+                                                            <option value="Information Science and Engineering">ISE
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="semester">Semester</label>
+                                                        <select name="semester" class="form-control" id="semester">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="notes" role="tabpanel"
+                                    aria-labelledby="ConnectedServices-tab">
+                                    
                                 </div>
                             </div>
                         </div>

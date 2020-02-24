@@ -22,12 +22,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  notesId: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Notes'
-    }
-  ],
   isMobileVerified: {
     type: Boolean,
     default: false

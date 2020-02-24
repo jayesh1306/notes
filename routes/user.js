@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('../db/queries');
+const db = require('../db/queries')
 
 const router = express.Router()
 
@@ -13,7 +13,7 @@ router.get('/dashboard', (req, res, next) => {
     })
     .catch(err => {
       req.flash('error_msg', err.message)
-      res.redirect('/error');
+      res.redirect('/error')
     })
 })
 
@@ -33,13 +33,13 @@ router.get('/notes/:id', (req, res, next) => {
 })
 
 router.post('/notes/:id/buy', (req, res, next) => {
-  var notesId = req.params.id;
+  var notesId = req.params.id
   db.getNote(notesId)
     .then(note => {
       db.updateUser(req.userData.email, notesId)
         .then(user => {
-          req.flash('success_msg', 'Request Sent Successfully');
-          res.redirect('/user/dashboard');
+          req.flash('success_msg', 'Request Sent Successfully')
+          res.redirect('/user/dashboard')
         })
         .catch(error => {
           res.json({ error })
@@ -48,6 +48,12 @@ router.post('/notes/:id/buy', (req, res, next) => {
     .catch(err => {
       res.json({ err })
     })
+})
+
+router.get('/addNotes', (req, res, next) => {
+  res.render('user/notes', {
+    userData: req.userData
+  })
 })
 
 module.exports = router
