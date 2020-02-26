@@ -6,7 +6,8 @@ const router = express.Router()
 router.get('/dashboard', (req, res, next) => {
   db.getUser(req.userData.email)
     .then(user => {
-      console.log(user)
+      console.log(user);
+      db.getNote()
       res.render('user/dashboard', {
         userData: user
       })
