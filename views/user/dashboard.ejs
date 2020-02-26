@@ -103,20 +103,23 @@
                                                 <form action="/user/addNotes" method="post">
                                                     <div class="form-group">
                                                         <label for="subject">Subject</label>
-                                                        <select name="subject" class="form-control" id="">
+                                                        <input type="text" name="subject" class="form-control">
+                                                        <!-- <select name="subject" class="form-control" id="">
                                                             <option value="Computer Networks">CN</option>
-                                                        </select>
+                                                        </select> -->
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="department">Department</label>
-                                                        <select name="department" class="form-control" id="department">
+                                                        <input type="text" name="department" value="Mechanical Engineering" class="form-control">
+                                                        <!-- <select name="department" class="form-control" id="department">
                                                             <option value="Information Science and Engineering">ISE
                                                             </option>
-                                                        </select>
+                                                        </select> -->
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="semester">Semester</label>
-                                                        <select name="semester" class="form-control" id="semester">
+                                                        <input type="number" value="3" name="semester" class="form-control">
+                                                        <!-- <select name="semester" class="form-control" id="semester">
                                                             <option value="1">1</option>
                                                             <option value="2">2</option>
                                                             <option value="3">3</option>
@@ -125,7 +128,10 @@
                                                             <option value="6">6</option>
                                                             <option value="7">7</option>
                                                             <option value="8">8</option>
-                                                        </select>
+                                                        </select> -->
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary">Submit</button>
                                                     </div>
                                                 </form>
                                             </div>

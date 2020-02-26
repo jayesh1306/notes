@@ -1,4 +1,5 @@
 const express = require('express')
+const Note = require('../models/Notes');
 const db = require('../db/queries')
 
 const router = express.Router()
@@ -50,10 +51,19 @@ router.post('/notes/:id/buy', (req, res, next) => {
     })
 })
 
-router.get('/addNotes', (req, res, next) => {
-  res.render('user/notes', {
-    userData: req.userData
-  })
+router.post('/addNotes', (req, res, next) => {
+  var notes = new Note({
+    subject: req.body.subject,
+    semester: req.body.semester,
+    department: req.body.department
+  });
+  notes.save()
+    .then(data => {
+      res.redirect('/user/dashboard');
+    })
+    .catch(err => {
+      res.json({ failed: "Cannot Save" });
+    })
 })
 
 module.exports = router
