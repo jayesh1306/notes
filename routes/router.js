@@ -19,6 +19,12 @@ router.get('/error', (req, res, next) => {
   })
 })
 
+router.post('/welcome', (req, res, next) => {
+  console.log(req.body.file);
+  res.json({ success: 'File Received' });
+
+})
+
 //About Section
 router.use('/about', checkAuth, (req, res, next) => {
   res.render('about/about', {
@@ -34,7 +40,7 @@ router.use('/auth', auth)
 
 //User Routes
 router.use('/user', checkAuth, verify, user)
-router.use('/notes', checkAuth, notes);
+router.use('/notes', checkAuth, notes)
 router.use('/', checkAuth, home)
 
 //Home Route

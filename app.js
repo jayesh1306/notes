@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 const flash = require('connect-flash')
 const session = require('express-session')
-
+const morgan = require('morgan');
 //App Initialization
 const app = express()
 
@@ -29,6 +29,7 @@ mongoose.connect(
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser())
+app.use(morgan('dev'));
 
 //View-Engine
 app.use(expressLayouts)

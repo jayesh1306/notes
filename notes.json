@@ -1,0 +1,457 @@
+[
+    {
+        "_id": "5e53dc2ef599063e35406844",
+        "subject": "Engineering Maths 1",
+        "semester": 1,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc3cf599063e35406845",
+        "subject": "Engineering Physics",
+        "semester": 1,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc4cf599063e35406846",
+        "subject": "ELEMENTS OF CIVIL ENGG & MECHANICS",
+        "semester": 1,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc5ef599063e35406847",
+        "subject": "ELEMENTS OF MECHANICAL ENGINEERING",
+        "semester": 1,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc6bf599063e35406848",
+        "subject": "BASIC ELECTRICAL ENGINEERING",
+        "semester": 1,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc78f599063e35406849",
+        "subject": "CONSTITUTION OF INDIA, PROFESSIONAL ETHICS AND HUMAN RIGHTS",
+        "semester": 1,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc8af599063e3540684a",
+        "subject": "ENGINEERING MATHEMATICS 2",
+        "semester": 2,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc94f599063e3540684b",
+        "subject": "ENGINEERING CHEMISTRY",
+        "semester": 2,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dc9ff599063e3540684c",
+        "subject": "PROGRAMMING IN C AND DATA STRUCTURES",
+        "semester": 2,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dcaaf599063e3540684d",
+        "subject": "BASIC ELECTRONICS",
+        "semester": 2,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dcb3f599063e3540684e",
+        "subject": "ENVIRONMENTAL STUDIES",
+        "semester": 2,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53dcc5f599063e3540684f",
+        "subject": "COMPUTER AIDED ENGINEERING DRAWING",
+        "semester": 2,
+        "department": "All Department",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e2f77c831142e4d46921",
+        "subject": "Engineering Mathematics 3 ",
+        "semester": 3,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3047c831142e4d46922",
+        "subject": "Basic Surveying",
+        "semester": 3,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3167c831142e4d46923",
+        "subject": "Building Materials and Construction",
+        "semester": 3,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3217c831142e4d46924",
+        "subject": "Engineering Geology",
+        "semester": 3,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e32f7c831142e4d46925",
+        "subject": "Fluid Mechanics",
+        "semester": 3,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e33a7c831142e4d46926",
+        "subject": "Strength of Materials",
+        "semester": 3,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3727c831142e4d46927",
+        "subject": "Engineering mathematics 4",
+        "semester": 4,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e37f7c831142e4d46928",
+        "subject": "Analysis of Determinate Structures",
+        "semester": 4,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e39c7c831142e4d46929",
+        "subject": "Applied Hydraulics",
+        "semester": 4,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3a67c831142e4d4692a",
+        "subject": "Concrete Technology",
+        "semester": 4,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3b67c831142e4d4692b",
+        "subject": "Basic Geotechnical Engineering",
+        "semester": 4,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e3c27c831142e4d4692c",
+        "subject": "Advanced Surveying",
+        "semester": 4,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4047c831142e4d4692d",
+        "subject": "Design of RC Structural Elements",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4127c831142e4d4692e",
+        "subject": "Analysis of Indeterminate Structures",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e41c7c831142e4d4692f",
+        "subject": "Applied Geotechnical Engineering",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4327c831142e4d46930",
+        "subject": "Computer Aided Building Planning and Drawing",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e43d7c831142e4d46931",
+        "subject": "Air Pollution and Control",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4447c831142e4d46932",
+        "subject": "Railways, Harbour, Tunneling and Airports",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e44a7c831142e4d46933",
+        "subject": "Masonry Structures",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4507c831142e4d46934",
+        "subject": "Theory of Elasticity",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4567c831142e4d46935",
+        "subject": "Traffic Engineering",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e45d7c831142e4d46936",
+        "subject": "Sustainability Concepts in Engineering",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4637c831142e4d46937",
+        "subject": "Remote Sensing and GIS",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e46b7c831142e4d46938",
+        "subject": "Occupational Health and Safety",
+        "semester": 5,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4867c831142e4d46939",
+        "subject": "Construction Management and Entrepreneurship",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e48e7c831142e4d4693a",
+        "subject": "Design of Steel Structural Elements",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4967c831142e4d4693b",
+        "subject": "Highway Engineering",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e49f7c831142e4d4693c",
+        "subject": "Water Supply and Treatment Engineering",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4ae7c831142e4d4693d",
+        "subject": "Solid Waste Management",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4b37c831142e4d4693e",
+        "subject": "Matrix Method of Structural Analysis",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4b97c831142e4d4693f",
+        "subject": "Alternative Building Materials",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4c07c831142e4d46940",
+        "subject": "Ground Improvement Techniques",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4c77c831142e4d46941",
+        "subject": "Water Resources Management",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4cd7c831142e4d46942",
+        "subject": "Environmental Protection and Management",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4d37c831142e4d46943",
+        "subject": "Numerical Methods and Applications",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4d87c831142e4d46944",
+        "subject": "Finite Element Method",
+        "semester": 6,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e4f57c831142e4d46945",
+        "subject": "Municipal and Industrial Waste Water Engineering",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5047c831142e4d46946",
+        "subject": "Design of RCC and Steel Structures",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e50b7c831142e4d46947",
+        "subject": "Hydrology and Irrigation Engineering",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5167c831142e4d46948",
+        "subject": "Design of Bridges",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e51e7c831142e4d46949",
+        "subject": "Urban Transportation and Planning",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5257c831142e4d4694a",
+        "subject": "Ground Water & Hydraulics",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e52b7c831142e4d4694b",
+        "subject": "Prefabricated Structures",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5327c831142e4d4694c",
+        "subject": "Design Concept of Building Services",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5387c831142e4d4694d",
+        "subject": "Rehabilitation and Retrofitting of Structures",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e53d7c831142e4d4694e",
+        "subject": "Structural Dynamics",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5437c831142e4d4694f",
+        "subject": "Reinforced Earth Structures",
+        "semester": 7,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5597c831142e4d46950",
+        "subject": "Quantity Surveying and Contracts Management",
+        "semester": 8,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5617c831142e4d46951",
+        "subject": "Design of Pre Stressed Concrete Elements",
+        "semester": 8,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5737c831142e4d46952",
+        "subject": "Earthquake Engineering",
+        "semester": 8,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e57a7c831142e4d46953",
+        "subject": "Hydraulic Structures",
+        "semester": 8,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e57f7c831142e4d46954",
+        "subject": "Pavement Design",
+        "semester": 8,
+        "department": "Civil Engineering",
+        "__v": 0
+    },
+    {
+        "_id": "5e53e5857c831142e4d46955",
+        "subject": "Advanced Foundation Design",
+        "semester": 8,
+        "department": "Civil Engineering",
+        "__v": 0
+    }
+]

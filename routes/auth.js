@@ -66,7 +66,7 @@ router.post('/register', (req, res, next) => {
   console.log(req.body.password1, sha256(req.body.password1))
   var pass = sha256(req.body.password1)
 
-  db.getUser(req.body.email)
+  User.find({ $or: [{ email: req.body.email }, { contact: req.body.contact }], })
     .then(user => {
       if (user.length < 1) {
         const userData = new User({
@@ -199,6 +199,7 @@ router.post('/mobileVerification', (req, res, next) => {
           var mobile = contact.substring(3)
           User.updateOne({ contact: mobile }, { isMobileVerified: true })
             .then(data => {
+              console.log(data);
               req.flash('success_msg', 'Mobile Number Verified')
               res.redirect('/auth/login')
             })
