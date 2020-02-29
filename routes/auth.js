@@ -19,6 +19,7 @@ router.get('/login', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   var username = req.body.username
   var password = sha256(req.body.password)
+  var id;
   db.getUser(username)
     .then(user => {
       if (user.length < 1) {
@@ -28,11 +29,12 @@ router.post('/login', (req, res, next) => {
         req.flash('error_msg', 'Incorrect Password')
         res.redirect('/auth/login')
       } else {
+        console.log(user[0]._id);
         const token = jwt.sign(
           {
             email: username,
-            gender: user.gender,
-            id: user._id
+            gender: user[0].gender,
+            id: user[0]._id
           },
           'secret',
           {

@@ -12,6 +12,10 @@ const UserNotesSchema = new mongoose.Schema({
     notesId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notes'
+    }],
+    price: [{
+        type: Number,
+        required:true
     }]
 })
 

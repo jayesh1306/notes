@@ -1,8 +1,6 @@
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <div class="container mt-5">
+    <%- include ('../partials/message')%>
     <div class="row">
-        <%- include ('../partials/message')%>
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -105,29 +103,20 @@
                                                 <form action="/user/addNotes" method="post">
                                                     <div class="form-group">
                                                         <label for="subject">Subject</label>
-                                                        <select name="subject" class="form-control" id="">
-                                                            <option value="Computer Networks">CN</option>
+                                                        <select name="subject" class="form-control" required>
+                                                            <option value="" selected>Select Subject</option>
+                                                            <%for(var i=0;i< notes.length;i++){%>
+                                                            <option value="<%= notes[i]._id%>">
+                                                                <%= notes[i].subject%></option>
+                                                            <%}%>
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="department">Department</label>
-                                                        <select name="department"  class="form-control js-example-basic-single" id="department">
-                                                            <option value="Information Science and Engineering">ISE
-                                                            </option>
-                                                        </select>
+                                                        <label for="price">Price :</label>
+                                                        <input type="number" class="form-control" name="price" required placeholder="Enter Zero if selling at no Cost">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="semester">Semester</label>
-                                                        <select name="semester" class="form-control" id="semester">
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                        </select>
+                                                        <button class="btn btn-primary">Submit</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -136,7 +125,30 @@
                                 </div>
                                 <div class="tab-pane fade" id="notes" role="tabpanel"
                                     aria-labelledby="ConnectedServices-tab">
-
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Department</th>
+                                                <th>Semester</th>
+                                                <th>Subject</th>
+                                                <th>Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="myTable">
+                                                <%if(notes.length>=1){%>
+                                                            <%for(var i=0;i< salesNotes.length;i++){%>
+                                                            <tr>
+                                                                <td><%=salesNotes[i].department %></td>
+                                                                <td><%=salesNotes[i].semester%></td>
+                                                                <td><%=salesNotes[i].subject%></td>
+                                                                <td><%=prices[i]%></td>
+                                                            </tr>
+                                                            <%}%>
+                                                                <%}else{%>
+                                                            <h3>You Have not posted any Notes to Sell</h3>
+                                                            <%}%>
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
@@ -149,9 +161,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-    });
-</script>
