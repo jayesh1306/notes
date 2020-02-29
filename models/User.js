@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
   isMobileVerified: {
     type: Boolean,
     default: false
+  },
+  gender: {
+    type: Number,
+    required: true
   }
 })
 

@@ -25,19 +25,20 @@ router.post('/login', (req, res, next) => {
         req.flash('error_msg', 'Account Not Registered  ..!!')
         res.redirect('/auth/register')
       } else if (password != user[0].password) {
-        console.log(password, user[0].password)
         req.flash('error_msg', 'Incorrect Password')
         res.redirect('/auth/login')
       } else {
         const token = jwt.sign(
           {
             email: username,
+            gender: user.gender,
             id: user._id
           },
           'secret',
           {
             expiresIn: '24h'
           }
+
         )
         localStorage.setItem('token', 'Bearer ' + token)
         res.redirect('/user/dashboard')
@@ -70,7 +71,8 @@ router.post('/register', (req, res, next) => {
           name: req.body.name,
           contact: req.body.contact,
           email: req.body.email,
-          password: pass
+          password: pass,
+          gender: req.body.gender
         })
         //Email Service
         emailService
