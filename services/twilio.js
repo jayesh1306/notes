@@ -8,7 +8,7 @@ const localStorage = require('localStorage')
 exports.sendSMS = contact => {
   return new Promise((resolve, reject) => {
     twilio.verify
-      .services('VA13b82bf16d93f472800fcb6047e29d20')
+      .services('VA7f9b8b5b487402e284bc06337598a56b')
       .verifications.create({
         to: `+91${contact}`,
         channel: `sms`
@@ -26,7 +26,7 @@ exports.verifySms = codes => {
   return new Promise((resolve, reject) => {
     twilio
       .verify
-      .services('VA13b82bf16d93f472800fcb6047e29d20')
+      .services('VA7f9b8b5b487402e284bc06337598a56b')
       .verificationChecks
       .create({
         to: `${localStorage.getItem('mobile')}`,

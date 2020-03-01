@@ -165,7 +165,7 @@ router.get('/mobile', (req, res, next) => {
 })
 
 router.get('/mobileVerification', (req, res, next) => {
-  if (localStorage.getItem('mobile') == null) {
+  if (req.cookies.mobile == null) {
     smsService
       .sendSMS(req.query.contact)
       .then(datd => {
@@ -178,44 +178,45 @@ router.get('/mobileVerification', (req, res, next) => {
         res.redirect('/auth/mobile')
       })
   } else {
-    res.render('authentication/mobileVerify', {
+    res.cookie('mobile', '+91' + req.query.contact).render('authentication/mobileVerify', {
       userData: req.userData
     })
   }
 })
 
 router.post('/mobileVerification', (req, res, next) => {
-  if (localStorage.getItem('mobile') && req.body.code.length === 6) {
-    smsService
-      .verifySms(req.body.code)
-      .then(data => {
-        if (data.status === 'approved') {
-          var contact = localStorage.getItem('mobile')
-          var mobile = contact.substring(3)
-          User.updateOne({ contact: mobile }, { isMobileVerified: true })
-            .then(data => {
-              req.flash('success_msg', 'Mobile Number Verified')
-              res.redirect('/auth/login')
-            })
-            .catch(error => {
-              req.flash(
-                'error_msg',
-                'Phone Number or Code is Invalid....Please try again log in'
-              )
-              res.redirect('/auth/login')
-            })
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  } else {
-    req.flash(
-      'error_msg',
-      'Phone Number or Code is Invalid....Please try again log in'
-    )
-    res.redirect('/auth/login')
-  }
+  console.log(req.body.mobile)
+  // if (req.cookies.mobile && req.body.code.length === 6) {
+  //   smsService
+  //     .verifySms(req.body.code)
+  //     .then(data => {
+  //       if (data.status === 'approved') {
+  //         var contact = req.cookies.mobile
+  //         var mobile = contact.substring(3)
+  //         User.updateOne({ contact: mobile }, { isMobileVerified: true })
+  //           .then(data => {
+  //             req.flash('success_msg', 'Mobile Number Verified')
+  //             res.redirect('/auth/login')
+  //           })
+  //           .catch(error => {
+  //             req.flash(
+  //               'error_msg',
+  //               'Phone Number or Code is Invalid....Please try again log in'
+  //             )
+  //             res.redirect('/auth/login')
+  //           })
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // } else {
+  //   req.flash(
+  //     'error_msg',
+  //     'Phone Number or Code is Invalid....Please try again log in'
+  //   )
+  //   res.redirect('/auth/login')
+  // }
 })
 
 router.get('/verify/:token', (req, res, next) => {
