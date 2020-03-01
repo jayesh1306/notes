@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
                 if (users[0].gender == 1) {
                     UserNotes.find({ gender: 1 }).populate('notesId').then(datas => {
                         console.log(datas);
-                        if (datas == null) {
+                        if (datas.length == 0) {
                             res.render('notes/notes', {
                                 userData: req.userData,
                                 notes: '',
@@ -27,7 +27,7 @@ router.get('/', (req, res, next) => {
                     }).catch(err => {
                         console.log(err);
                     });
-                } else {
+                } else if (user[0].gender == 0) {
                     UserNotes.find({ gender: 0 }).populate('notesId').then(datas => {
                         // console.log(datas);
                         if (datas.length <= 1) {
@@ -47,6 +47,12 @@ router.get('/', (req, res, next) => {
                     }).catch(err => {
                         console.log(err);
                     });
+                } else {
+                    res.render('notes/notes', {
+                        userData: req.userData,
+                        notes: '',
+                        userId: ''
+                    })
                 }
             }
         }).catch();
