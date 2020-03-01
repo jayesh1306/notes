@@ -22,14 +22,14 @@ exports.sendSMS = contact => {
   })
 }
 
-exports.verifySms = codes => {
+exports.verifySms = (codes, contact) => {
   return new Promise((resolve, reject) => {
     twilio
       .verify
       .services('VA7f9b8b5b487402e284bc06337598a56b')
       .verificationChecks
       .create({
-        to: `${req.cookies.mobile}`,
+        to: `${contact}`,
         code: codes
       }, (err, data) => {
         if (err) {

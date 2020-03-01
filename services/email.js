@@ -10,18 +10,8 @@ let transporter = nodemailer.createTransport({
   }
 })
 
-exports.sendEmail = (email, req) => {
+exports.sendEmail = (email, req, token) => {
   if (email) {
-    const token = jwt.sign(
-      {
-        email: email
-      },
-      'secret',
-      {
-        expiresIn: 180
-      }
-    )
-    localStorage.setItem('token', 'Bearer ' + token)
     return new Promise(async (resolve, reject) => {
       transporter.sendMail(
         {

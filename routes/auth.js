@@ -72,11 +72,19 @@ router.post('/register', (req, res, next) => {
           password: pass,
           gender: req.body.gender
         })
+        const token = jwt.sign(
+          {
+            email: req.body.email
+          },
+          'secret',
+          {
+            expiresIn: 180
+          }
+        )
         //Email Service
         emailService
-          .sendEmail(userData.email)
+          .sendEmail(userData.email, null, token)
           .then(info => {
-
             userData
               .save()
               .then(user => {
@@ -87,8 +95,8 @@ router.post('/register', (req, res, next) => {
                       'success_msg',
                       'Account Registered, Please Verify Email and enter code here that we have sent to your mobile number'
                     )
-                    res.cookie('token', 'Bearer ' + info.token);
-                    res.cookie('mobile', '+91' + req.body.contact).redirect('/auth/mobileVerification')
+                    res.cookie('token', 'Bearer ' + token);
+                    res.cookie('mobile', '+91' + user.contact).redirect('/auth/mobileVerification')
                   })
                   .catch(error => {
                     console.log(error)
@@ -168,7 +176,7 @@ router.get('/mobileVerification', (req, res, next) => {
   if (req.cookies.mobile == null) {
     smsService
       .sendSMS(req.query.contact)
-      .then(datd => {
+      .then(data => {
         res.cookie('mobile', '+91' + req.query.contact).render('authentication/mobileVerify', {
           userData: req.userData
         })
@@ -178,7 +186,7 @@ router.get('/mobileVerification', (req, res, next) => {
         res.redirect('/auth/mobile')
       })
   } else {
-    res.cookie('mobile', '+91' + req.query.contact).render('authentication/mobileVerify', {
+    res.render('authentication/mobileVerify', {
       userData: req.userData
     })
   }
@@ -188,7 +196,7 @@ router.post('/mobileVerification', (req, res, next) => {
   console.log(req.cookies, req.body);
   if (req.cookies.mobile && req.body.code.length === 6) {
     smsService
-      .verifySms(req.body.code)
+      .verifySms(req.body.code, req.cookies.mobile)
       .then(data => {
         if (data.status === 'approved') {
           var contact = req.cookies.mobile
