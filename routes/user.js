@@ -18,7 +18,12 @@ router.get('/dashboard', (req, res, next) => {
                 prices: ''
               })
             } else {
-              
+              res.render('user/dashboard', {
+                userData: user,
+                notes: notes,
+                salesNotes: salesNotes.notesId,
+                prices: salesNotes.price
+              })
             }
           })
           .catch(err => {

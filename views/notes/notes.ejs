@@ -19,11 +19,14 @@
                 <%if(notes.length>=1){%>
                 <%for(var i=0;i< notes.length;i++){%>
             <tr>
+                <%if(userData !=null && userId == userData.id) {%>
+                <% continue %>
+                <%}%>
                 <td><%=notes[i].department %></td>
                 <td><%=notes[i].semester%></td>
                 <td><%=notes[i].subject%></td>
                 <%if(userData){%>
-                <td><a href="http://localhost:3000/user/notes/<%=notes[i]._id%>"><i class="fa fa-cart-plus"></i></a>
+                <td><a href="http://localhost:3000/user/notes/<%=notes[i].notesId%>"><i class="fa fa-cart-plus"></i></a>
                 </td>
                 <%}%>
                 </tr>

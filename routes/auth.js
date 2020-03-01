@@ -40,9 +40,9 @@ router.post('/login', (req, res, next) => {
           {
             expiresIn: '24h'
           }
-
         )
         localStorage.setItem('token', 'Bearer ' + token)
+        console.log('-------------------------')
         res.redirect('/user/dashboard')
       }
     })
