@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
                     }).catch(err => {
                         console.log(err);
                     });
-                } else if (user[0].gender == 0) {
+                } else if (users[0].gender == 0) {
                     UserNotes.find({ gender: 0 }).populate('notesId').then(datas => {
                         if (datas.length <= 1) {
                             res.render('notes/notes', {
