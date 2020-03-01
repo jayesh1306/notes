@@ -29,7 +29,7 @@ mongoose.connect(
 //Initializing Cross-Origin Resource
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
-app.use(bodyParser())
+app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
 //View-Engine

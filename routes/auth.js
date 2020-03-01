@@ -228,7 +228,7 @@ router.post('/mobileVerification', (req, res, next) => {
 })
 
 router.get('/verify/:token', (req, res, next) => {
-  var token = localStorage.getItem('token')
+  var token = req.cookies.token;
 
   var decoded = jwt.decode(token.split(' ')[1], 'secret')
   console.log(decoded)
