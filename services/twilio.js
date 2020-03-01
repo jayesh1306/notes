@@ -29,7 +29,7 @@ exports.verifySms = codes => {
       .services('VA7f9b8b5b487402e284bc06337598a56b')
       .verificationChecks
       .create({
-        to: `${localStorage.getItem('mobile')}`,
+        to: `${req.cookies.mobile}`,
         code: codes
       }, (err, data) => {
         if (err) {

@@ -185,38 +185,38 @@ router.get('/mobileVerification', (req, res, next) => {
 })
 
 router.post('/mobileVerification', (req, res, next) => {
-  console.log(req.body.mobile)
-  // if (req.cookies.mobile && req.body.code.length === 6) {
-  //   smsService
-  //     .verifySms(req.body.code)
-  //     .then(data => {
-  //       if (data.status === 'approved') {
-  //         var contact = req.cookies.mobile
-  //         var mobile = contact.substring(3)
-  //         User.updateOne({ contact: mobile }, { isMobileVerified: true })
-  //           .then(data => {
-  //             req.flash('success_msg', 'Mobile Number Verified')
-  //             res.redirect('/auth/login')
-  //           })
-  //           .catch(error => {
-  //             req.flash(
-  //               'error_msg',
-  //               'Phone Number or Code is Invalid....Please try again log in'
-  //             )
-  //             res.redirect('/auth/login')
-  //           })
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // } else {
-  //   req.flash(
-  //     'error_msg',
-  //     'Phone Number or Code is Invalid....Please try again log in'
-  //   )
-  //   res.redirect('/auth/login')
-  // }
+  console.log(req.cookies, req.body);
+  if (req.cookies.mobile && req.body.code.length === 6) {
+    smsService
+      .verifySms(req.body.code)
+      .then(data => {
+        if (data.status === 'approved') {
+          var contact = req.cookies.mobile
+          var mobile = contact.substring(3)
+          User.updateOne({ contact: mobile }, { isMobileVerified: true })
+            .then(data => {
+              req.flash('success_msg', 'Mobile Number Verified')
+              res.redirect('/auth/login')
+            })
+            .catch(error => {
+              req.flash(
+                'error_msg',
+                'Phone Number or Code is Invalid....Please try again log in'
+              )
+              res.redirect('/auth/login')
+            })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  } else {
+    req.flash(
+      'error_msg',
+      'Phone Number or Code is Invalid....Please try again log in'
+    )
+    res.redirect('/auth/login')
+  }
 })
 
 router.get('/verify/:token', (req, res, next) => {
