@@ -49,7 +49,8 @@ router.post('/login', (req, res, next) => {
             expiresIn: '24h'
           }
         )
-        res.cookie('token', 'Bearer ' + token).redirect('/user/dashboard')
+        res.cookie('token', 'Bearer ' + token);
+        res.redirect('/user/dashboard')
       }
     })
     .catch(err => {
@@ -242,7 +243,6 @@ router.post('/mobileVerification', (req, res, next) => {
 
 router.get('/verify/:token', (req, res, next) => {
   var token = req.cookies.token;
-
   var decoded = jwt.decode(token.split(' ')[1], 'secret')
   console.log(decoded)
   if (decoded.exp < parseInt(Date.now() * 1000)) {
