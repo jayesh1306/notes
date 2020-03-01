@@ -11,11 +11,19 @@ router.get('/', (req, res, next) => {
                 if (users[0].gender == 1) {
                     UserNotes.find({ gender: 1 }).populate('notesId').then(datas => {
                         console.log(datas);
-                        res.render('notes/notes', {
-                            userData: req.userData,
-                            notes: datas[0].notesId,
-                            userId: datas[0].userId
-                        })
+                        if (datas == null) {
+                            res.render('notes/notes', {
+                                userData: req.userData,
+                                notes: '',
+                                userId: ''
+                            })
+                        } else {
+                            res.render('notes/notes', {
+                                userData: req.userData,
+                                notes: datas[0].notesId,
+                                userId: datas[0].userId
+                            })
+                        }
                     }).catch(err => {
                         console.log(err);
                     });
