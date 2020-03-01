@@ -10,9 +10,15 @@ let transporter = nodemailer.createTransport({
   }
 })
 
-exports.sendEmail = (email, req, token) => {
+exports.sendEmail = (email, req, res) => {
   if (email) {
     return new Promise(async (resolve, reject) => {
+      const token = jwt.sign({
+        email: email
+      }, 'secret', {
+        expiresIn: 180
+      })
+      res.cookie('token', 'Bearer ' + token);
       transporter.sendMail(
         {
           from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',

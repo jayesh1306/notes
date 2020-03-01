@@ -6,9 +6,18 @@ const smsService = require('../services/twilio')
 const db = require('../db/queries')
 const User = require('../models/User')
 const Notes = require('../models/Notes')
-const sha256 = require('sha256')
+const sha256 = require('sha256');
+const nodemailer = require('nodemailer');
 
 const router = express.Router()
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail', // true for 465, false for other ports
+  auth: {
+    user: 'prajapatijayesh.beis.16@acharya.ac.in', // generated ethereal user
+    pass: 'jscajyutkqmgymur' // generated ethereal password
+  }
+});
 
 router.get('/login', (req, res, next) => {
   res.render('authentication/login', {
@@ -72,18 +81,20 @@ router.post('/register', (req, res, next) => {
           password: pass,
           gender: req.body.gender
         })
-        const token = jwt.sign(
-          {
-            email: req.body.email
-          },
-          'secret',
-          {
-            expiresIn: 180
-          }
-        )
+        const token = jwt.sign({
+          email: req.body.email
+        }, 'secret', {
+          expiresIn: 180
+        })
         //Email Service
-        emailService
-          .sendEmail(userData.email, null, token)
+        transporter.sendMail(
+          {
+            from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',
+            to: req.body.email,
+            subject: 'Verification Link',
+            // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
+            html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='https://notessapp.herokuapp.com/auth/verify/${token}'>Click</a>`
+          })
           .then(info => {
             userData
               .save()
@@ -95,8 +106,9 @@ router.post('/register', (req, res, next) => {
                       'success_msg',
                       'Account Registered, Please Verify Email and enter code here that we have sent to your mobile number'
                     )
-                    res.cookie('token', 'Bearer ' + token);
-                    res.cookie('mobile', '+91' + user.contact).redirect('/auth/mobileVerification')
+                    res.cookie('token', 'Bearer ' + token)
+                    res.cookie('mobile', '+91' + user.contact);
+                    res.redirect('/auth/mobileVerification')
                   })
                   .catch(error => {
                     console.log(error)
@@ -143,6 +155,7 @@ router.post('/sendEmail', (req, res, next) => {
     .then(info => {
       db.getUser(req.body.email)
         .then(user => {
+          console.log(req.cookies)
           req.flash('success_msg', 'Sent Email, Please Verify Email')
           res.cookie('token', 'Bearer ' + info.token).redirect('/auth/login')
         })
@@ -241,10 +254,12 @@ router.get('/verify/:token', (req, res, next) => {
             res.redirect('/auth/login')
           })
           .catch(err => {
+            console.log(err)
             res.status(401).json({ failed: err.message })
           })
       })
       .catch(err => {
+        console.log(err)
         res.json({ error: err })
       })
   } else {
