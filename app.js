@@ -5,6 +5,7 @@ const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv').config()
 const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser');
 const path = require('path')
 const flash = require('connect-flash')
 const session = require('express-session')
@@ -30,7 +31,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser())
 app.use(morgan('dev'));
-
+app.use(cookieParser());
 //View-Engine
 app.use(expressLayouts)
 app.set('view engine', 'ejs')

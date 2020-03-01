@@ -4,7 +4,7 @@ const localStorage = require('localStorage')
 module.exports = (req, res, next) => {
   try {
     var decoded = jwt.verify(
-      localStorage.getItem('token').split(' ')[1],
+      req.cookies.token.split(" ")[1],
       'secret'
     )
     req.userData = decoded

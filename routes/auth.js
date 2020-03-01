@@ -40,8 +40,7 @@ router.post('/login', (req, res, next) => {
             expiresIn: '24h'
           }
         )
-        localStorage.setItem('token', 'Bearer ' + token)
-        res.redirect('/user/dashboard')
+        res.cookie('token', 'Bearer ' + token).redirect('/user/dashboard')
       }
     })
     .catch(err => {
@@ -77,6 +76,7 @@ router.post('/register', (req, res, next) => {
         emailService
           .sendEmail(userData.email)
           .then(info => {
+
             userData
               .save()
               .then(user => {
@@ -87,8 +87,8 @@ router.post('/register', (req, res, next) => {
                       'success_msg',
                       'Account Registered, Please Verify Email and enter code here that we have sent to your mobile number'
                     )
-                    localStorage.setItem('mobile', '+91' + req.body.contact)
-                    res.redirect('/auth/mobileVerification')
+                    res.cookie('token', 'Bearer ' + info.token);
+                    res.cookie('mobile', '+91' + req.body.contact).redirect('/auth/mobileVerification')
                   })
                   .catch(error => {
                     console.log(error)
@@ -136,7 +136,7 @@ router.post('/sendEmail', (req, res, next) => {
       db.getUser(req.body.email)
         .then(user => {
           req.flash('success_msg', 'Sent Email, Please Verify Email')
-          res.redirect('/auth/login')
+          res.cookie('token', 'Bearer ' + info.token).redirect('/auth/login')
         })
         .catch(err => {
           req.flash('error_msg', err.message)
@@ -153,7 +153,7 @@ router.post('/sendEmail', (req, res, next) => {
 })
 
 router.get('/logout', (req, res, next) => {
-  localStorage.clear()
+  res.clearCookie('token')
   req.flash('success_msg', 'Successfully Logged Out')
   res.redirect('/auth/login')
 })
@@ -166,11 +166,10 @@ router.get('/mobile', (req, res, next) => {
 
 router.get('/mobileVerification', (req, res, next) => {
   if (localStorage.getItem('mobile') == null) {
-    localStorage.setItem('mobile', '+91' + req.query.contact)
     smsService
       .sendSMS(req.query.contact)
       .then(datd => {
-        res.render('authentication/mobileVerify', {
+        res.cookie('mobile', '+91' + req.query.contact).render('authentication/mobileVerify', {
           userData: req.userData
         })
       })
@@ -245,12 +244,11 @@ router.get('/verify/:token', (req, res, next) => {
 })
 
 router.post('/sendSMS', (req, res, next) => {
-  localStorage.setItem('mobile', '+91' + req.body.contact)
   smsService
     .sendSMS(req.body.contact)
     .then(data => {
       req.flash('success_msg', 'Successfully Sent Message')
-      res.redirect('/auth/mobileVerification')
+      res.cookie('mobile', '+91' + req.body.contact).redirect('/auth/mobileVerification')
     })
     .catch(err => {
       req.flash('error_msg', err.message)
