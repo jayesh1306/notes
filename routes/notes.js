@@ -48,11 +48,25 @@ router.get('/', (req, res, next) => {
                         console.log(err);
                     });
                 } else {
-                    res.render('notes/notes', {
-                        userData: req.userData,
-                        notes: '',
-                        userId: ''
-                    })
+                    UserNotes.find().populate('notesId').then(notes => {
+                        if (notes != null) {
+                            res.render('notes/notes', {
+                                userData: req.userData,
+                                notes: notes,
+                                userId: ''
+                            })
+                        } else {
+                            res.render('notes/notes', {
+                                userData: req.userData,
+                                notes: '',
+                                userId: ''
+                            })
+                        }
+                    }).catch(err => {
+                        res.redirect('/error', {
+                            error
+                        })
+                    });
                 }
             }
         }).catch();
