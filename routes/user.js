@@ -5,11 +5,14 @@ const UserNotes = require('../models/UserNotes');
 const router = express.Router()
 
 router.get('/dashboard', (req, res, next) => {
+  console.log(req.userData);
   db.getUser(req.userData.email)
     .then(user => {
       db.getAllNotes().then(notes => {
-        UserNotes.findOne({ userId: user[0]._id }).populate('notesId')
-          .then(salesNotes => {
+        console.log(notes)
+        UserNotes.findOne({ userId: req.userData.id }).populate('notesId')
+        .then(salesNotes => {
+          console.log(salesNotes)
             if (salesNotes == null) {
               res.render('user/dashboard', {
                 userData: user,
@@ -85,10 +88,8 @@ router.get('/addNotes', (req, res, next) => {
 })
 
 router.post('/addNotes', (req, res, next) => {
-  console.log(req.userData)
   UserNotes.find({ userId: req.userData.id })
     .then(data => {
-      console.log(data);
       if (data.length <= 0) {
         var newNote = new UserNotes({
           userId: req.userData.id,

@@ -10,7 +10,6 @@ router.get('/', (req, res, next) => {
             if (users.length <= 1) {
                 if (users[0].gender == 1) {
                     UserNotes.find({ gender: 1 }).populate('notesId').then(datas => {
-                        console.log(datas);
                         if (datas.length == 0) {
                             res.render('notes/notes', {
                                 userData: req.userData,
@@ -29,7 +28,6 @@ router.get('/', (req, res, next) => {
                     });
                 } else if (user[0].gender == 0) {
                     UserNotes.find({ gender: 0 }).populate('notesId').then(datas => {
-                        // console.log(datas);
                         if (datas.length <= 1) {
                             res.render('notes/notes', {
                                 userData: req.userData,
@@ -72,9 +70,8 @@ router.get('/', (req, res, next) => {
         }).catch();
     } else {
         UserNotes.find().populate('notesId').then(notes => {
-            console.log(notes);
-
-            if (notes == null) {
+            console.log(notes)
+            if (notes.length == 0) {
                 res.render('notes/notes',
                     { userData: res.userData, notes: '', userId: '' })
             } else {

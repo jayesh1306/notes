@@ -29,7 +29,6 @@ router.post('/login', (req, res, next) => {
         req.flash('error_msg', 'Incorrect Password')
         res.redirect('/auth/login')
       } else {
-        console.log(user[0]._id);
         const token = jwt.sign(
           {
             email: username,
@@ -42,7 +41,6 @@ router.post('/login', (req, res, next) => {
           }
         )
         localStorage.setItem('token', 'Bearer ' + token)
-        console.log('-------------------------')
         res.redirect('/user/dashboard')
       }
     })
@@ -63,7 +61,6 @@ router.get('/register', (req, res, next) => {
 })
 
 router.post('/register', (req, res, next) => {
-  console.log(req.body.password1, sha256(req.body.password1))
   var pass = sha256(req.body.password1)
 
   User.find({ $or: [{ email: req.body.email }, { contact: req.body.contact }], })
@@ -193,13 +190,11 @@ router.post('/mobileVerification', (req, res, next) => {
     smsService
       .verifySms(req.body.code)
       .then(data => {
-        console.log(data)
         if (data.status === 'approved') {
           var contact = localStorage.getItem('mobile')
           var mobile = contact.substring(3)
           User.updateOne({ contact: mobile }, { isMobileVerified: true })
             .then(data => {
-              console.log(data);
               req.flash('success_msg', 'Mobile Number Verified')
               res.redirect('/auth/login')
             })
@@ -290,7 +285,6 @@ router.get('/forgotPassword/:token', (req, res, next) => {
     localStorage.getItem('token').split(' ')[1],
     'secret'
   )
-  console.log(decoded.exp, parseInt(Date.now() / 1000))
   if (decoded.exp < parseInt(Date.now() / 1000)) {
     req.flash('error_msg', 'Link is Expired. Please try Again')
     res.redirect('/auth/forgotPassword')

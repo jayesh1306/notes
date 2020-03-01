@@ -54,7 +54,6 @@ exports.sendEmail = (email, req) => {
             console.log(err)
             reject(err)
           } else {
-            console.log(data)
             resolve(data)
           }
         }

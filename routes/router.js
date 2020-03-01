@@ -3,6 +3,7 @@ const express = require('express')
 //Middlewares
 const verify = require('../middleware/verify')
 const checkAuth = require('../middleware/checkAuth')
+const Note = require('../models/Notes');
 
 //Routes
 const home = require('./homePage')
@@ -42,6 +43,17 @@ router.use('/auth', auth)
 router.use('/user', checkAuth, verify, user)
 router.use('/notes', checkAuth, notes)
 router.use('/', checkAuth, home)
+
+router.post('/addNotes', (req, res, next) =>{
+  var notes = new Note({
+    department : req.body.department,
+    semester:req.body.semester,
+    subject:req.body.subject
+  })
+  notes.save().then( () =>{
+    res.json({succes: "Saved"})
+  })
+})
 
 //Home Route
 module.exports = router
