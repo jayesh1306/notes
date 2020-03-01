@@ -242,8 +242,8 @@ router.post('/mobileVerification', (req, res, next) => {
 })
 
 router.get('/verify/:token', (req, res, next) => {
-  var token = req.query.token;
-  var decoded = jwt.decode(req.query.token.split(' ')[1], 'secret')
+  var token = req.params.token;
+  var decoded = jwt.decode(token.split(' ')[1], 'secret')
   console.log(decoded)
   if (decoded.exp < parseInt(Date.now() * 1000)) {
     db.getUser(decoded.email)
