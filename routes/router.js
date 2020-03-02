@@ -15,21 +15,21 @@ const router = express.Router()
 
 //Error Route
 router.get('/error', (req, res, next) => {
-  res.render('error', {
-    userData: req.userData
-  })
+	res.render('error', {
+		userData: req.userData
+	})
 })
 
 router.post('/welcome', (req, res, next) => {
-  console.log(req.body.file)
-  res.json({ success: 'File Received' })
+	console.log(req.body.file)
+	res.json({ success: 'File Received' })
 })
 
 //About Section
 router.use('/about', checkAuth, (req, res, next) => {
-  res.render('about/about', {
-    userData: req.userData
-  })
+	res.render('about/about', {
+		userData: req.userData
+	})
 })
 
 //Contact Route
@@ -44,30 +44,30 @@ router.use('/notes', checkAuth, notes)
 router.use('/', checkAuth, home)
 
 router.get('/addNotes', (req, res, next) => {
-  res.render('addNotes', {
-    userData: req.userData
-  })
+	res.render('addNotes', {
+		userData: req.userData
+	})
 })
 
 router.post('/addNotes', (req, res, next) => {
-  var notes = new Note({
-    department: req.body.department,
-    semester: req.body.semester,
-    subject: req.body.subject,
-    year: req.body.year,
-    scheme: req.body.scheme,
-    code: req.body.code
-  })
-  notes
-    .save()
-    .then(notes => {
-      req.flash('success_msg', 'Saved!!!')
-      res.redirect('/addNotes')
-    })
-    .catch(err => {
-      req.flash('error_msg', err.message)
-      res.redirect('/addNotes')
-    })
+	var notes = new Note({
+		department: req.body.department,
+		semester: req.body.semester,
+		subject: req.body.subject,
+		year: req.body.year,
+		scheme: req.body.scheme,
+		code: req.body.code
+	})
+	notes
+		.save()
+		.then(notes => {
+			req.flash('success_msg', 'Saved!!!')
+			res.redirect('/addNotes')
+		})
+		.catch(err => {
+			req.flash('error_msg', err.message)
+			res.redirect('/addNotes')
+		})
 })
 
 //Home Route
