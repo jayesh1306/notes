@@ -3,7 +3,7 @@ const express = require('express')
 //Middlewares
 const verify = require('../middleware/verify')
 const checkAuth = require('../middleware/checkAuth')
-const Note = require('../models/Notes');
+const Note = require('../models/Notes')
 
 //Routes
 const home = require('./homePage')
@@ -21,9 +21,8 @@ router.get('/error', (req, res, next) => {
 })
 
 router.post('/welcome', (req, res, next) => {
-  console.log(req.body.file);
-  res.json({ success: 'File Received' });
-
+  console.log(req.body.file)
+  res.json({ success: 'File Received' })
 })
 
 //About Section
@@ -44,15 +43,31 @@ router.use('/user', checkAuth, verify, user)
 router.use('/notes', checkAuth, notes)
 router.use('/', checkAuth, home)
 
-router.post('/addNotes', (req, res, next) =>{
+router.get('/addNotes', (req, res, next) => {
+  res.render('addNotes', {
+    userData: req.userData
+  })
+})
+
+router.post('/addNotes', (req, res, next) => {
   var notes = new Note({
-    department : req.body.department,
-    semester:req.body.semester,
-    subject:req.body.subject
+    department: req.body.department,
+    semester: req.body.semester,
+    subject: req.body.subject,
+    year: req.body.year,
+    scheme: req.body.scheme,
+    code: req.body.code
   })
-  notes.save().then( () =>{
-    res.json({succes: "Saved"})
-  })
+  notes
+    .save()
+    .then(notes => {
+      req.flash('success_msg', 'Saved!!!')
+      res.redirect('/addNotes')
+    })
+    .catch(err => {
+      req.flash('error_msg', err.message)
+      res.redirect('/addNotes')
+    })
 })
 
 //Home Route

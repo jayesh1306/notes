@@ -1,0 +1,30 @@
+<form action="/addNotes" method="post">
+    <%- include ('partials/message')%>
+    <div class="form-group">
+        <label for="">Department</label>
+        <input type="text" placeholder="Example : Information Science and Engineering" required name="department" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="">Semester</label>
+        <input type="number" placeholder="Example  : 7" required name="semester" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="">Subject</label>
+        <input type="text" placeholder="Example: Computer Networks" required name="subject" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="">Subject Code</label>
+        <input type="text" placeholder="Example : 15CS43" name="code" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="">Scheme Type</label>
+        <input type="text" required placeholder="Example : CBCS / NON-CBCS" name="scheme" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="">Scheme Year</label>
+        <input type="number" required placeholder="Example : 2015" name="year" class="form-control">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</form>

@@ -12,6 +12,18 @@ const noteSchema = new mongoose.Schema({
   subject: {
     type: String,
     required: true
+  },
+  code: {
+    type: String,
+    required: true
+  },
+  scheme: {
+    type: String,
+    required: true
+  },
+  year: {
+    type: Number,
+    required: true
   }
 })
 
