@@ -13,8 +13,6 @@
                             <div class="userData ml-3">
                                 <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a
                                         href="javascript:void(0);"><%= userData.name %></a></h2>
-                                <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
-                                <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6>
                             </div>
                             <div class="ml-auto">
                                 <input type="button" class="btn btn-primary d-none" id="btnDiscard"
@@ -47,7 +45,7 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Full Name</label>
+                                            <label style="font-weight:bold;">Name</label>
                                         </div>
                                         <div class="col-md-8 col-6">
                                             <p><%= userData.name %></p>
@@ -57,10 +55,10 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Birth Date</label>
+                                            <label style="font-weight:bold;">Email</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            March 22, 1994.
+                                            <%= userData.email %>
                                         </div>
                                     </div>
                                     <hr />
@@ -68,31 +66,25 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Something</label>
+                                            <label style="font-weight:bold;">Contact</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            Something
+                                            <%=userData.contact%>
                                         </div>
                                     </div>
                                     <hr />
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Something</label>
+                                            <label style="font-weight:bold;">Gender</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            Something
+                                            <%if(userData.gender == 1){%>
+                                            Male
+                                            <%}else{%>
+                                            Female
+                                            <%}%>
                                         </div>
                                     </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Something</label>
-                                        </div>
-                                        <div class="col-md-8 col-6">
-                                            Something
-                                        </div>
-                                    </div>
-                                    <hr />
 
                                 </div>
                                 <div class="tab-pane fade" id="addNotes" role="tabpanel"
@@ -106,9 +98,9 @@
                                                         <select name="subject" class="form-control" required>
                                                             <option value="" selected>Select Subject</option>
                                                             <%for(var i=0;i< notes.length;i++){%>
-                                                            <option value="<%= notes[i]._id%>">
-                                                                <%= notes[i].subject%></option>
-                                                            <%}%>
+                                            <option value="<%= notes[i]._id%>">
+                                                <%= notes[i].subject%></option>
+                                            <%}%>
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
@@ -136,17 +128,17 @@
                                             </thead>
                                             <tbody id="myTable">
                                                 <%if(salesNotes.length !=0){%>
-                                                            <%for(var i=0;i< salesNotes.length;i++){%>
-                                                            <tr>
-                                                                <td><%=salesNotes[i].notesId.department %></td>
-                                                                <td><%=salesNotes[i].notesId.semester%></td>
-                                                                <td><%=salesNotes[i].notesId.subject%></td>
-                                                                <td><%=salesNotes[i].price%></td>
-                                                            </tr>
-                                                            <%}%>
+                                            <%for(var i=0;i< salesNotes.length;i++){%>
+                                            <tr>
+                                                <td><%=salesNotes[i].notesId.department %></td>
+                                                <td><%=salesNotes[i].notesId.semester%></td>
+                                                <td><%=salesNotes[i].notesId.subject%></td>
+                                                <td><%=salesNotes[i].price%></td>
+                                            </tr>
+                                            <%}%>
                                                                 <%}else{%>
-                                                            <h3>You Have not posted any Notes to Sell</h3>
-                                                            <%}%>
+                                            <h3>You Have not posted any Notes to Sell</h3>
+                                            <%}%>
                                             </tbody>
                                         </table>
                                 </div>

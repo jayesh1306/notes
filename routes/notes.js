@@ -8,7 +8,7 @@ const Notes = require('../models/Notes')
 
 router.get('/', (req, res, next) => {
   if (req.userData != null) {
-	  console.log(req.userData)
+    console.log(req.userData)
     salesNotes
       .find({
         $and: [
@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
       .populate('notesId')
       .populate('userId')
       .then(notes => {
-		  console.log(notes)
+        console.log(notes)
         if (notes.length < 1) {
           res.render('notes/notes', {
             userData: req.userData,
@@ -39,6 +39,29 @@ router.get('/', (req, res, next) => {
         })
       })
   }
+  salesNotes
+    .find()
+    .populate('notesId')
+    .populate('userId')
+    .then(notes => {
+      console.log(notes)
+      if (notes.length == 0) {
+        res.render('notes/notes', {
+          userData: res.userData,
+          notes: ''
+        })
+      } else {
+        res.render('notes/notes', {
+          userData: res.userData,
+          notes
+        })
+      }
+    })
+    .catch(err => {
+      req.flash('error', {
+        userData: req.userData
+      })
+    })
   // if (req.userData != null) {
   // 	db.getUser(req.userData.email)
   // 		.then(users => {
