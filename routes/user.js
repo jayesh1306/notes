@@ -2,11 +2,20 @@ const express = require('express')
 const db = require('../db/queries')
 const salesNotes = require('../models/SaleNotes')
 const UserNotes = require('../models/UserNotes')
+const nodemailer = require('nodemailer')
+const Order = require('../models/Order')
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail', // true for 465, false for other ports
+  auth: {
+    user: 'prajapatijayesh.beis.16@acharya.ac.in', // generated ethereal user
+    pass: 'jscajyutkqmgymur' // generated ethereal password
+  }
+})
 
 const router = express.Router()
 
 router.get('/dashboard', (req, res, next) => {
-  console.log(req.userData)
   db.getUser(req.userData.email)
     .then(user => {
       db.getAllNotes()
@@ -16,22 +25,29 @@ router.get('/dashboard', (req, res, next) => {
             .populate('notesId')
             .populate('userId')
             .then(salesNotes => {
-              if (salesNotes) {
-                console.log(salesNotes)
-                console.log('------------')
-                res.render('user/dashboard', {
-                  userData: user[0],
-                  notes: notes,
-                  salesNotes: salesNotes
+              Order.find({ userId: req.userData.id })
+                .populate('notes')
+                .then(orders => {
+                  if (salesNotes) {
+                    res.render('user/dashboard', {
+                      userData: user[0],
+                      notes: notes,
+                      salesNotes: salesNotes,
+                      orders
+                    })
+                  } else {
+                    console.log(salesNotes)
+                    res.render('user/dashboard', {
+                      userData: user,
+                      notes: notes,
+                      salesNotes: null
+                    })
+                  }
                 })
-              } else {
-                console.log(salesNotes)
-                res.render('user/dashboard', {
-                  userData: user,
-                  notes: notes,
-                  salesNotes: null
+                .catch(err => {
+                  req.flash('error_msg', err.message)
+                  res.redirect('/error')
                 })
-              }
             })
             .catch(err => {
               req.flash('error_msg', err.message)
@@ -65,24 +81,63 @@ router.get('/notes/:id', (req, res, next) => {
 })
 
 router.post('/notes/:id/buy', (req, res, next) => {
-  var notesId = req.params.id
-  db.getNote(notesId)
-    .then(note => {
-      db.updateUser(req.userData.email, notesId)
-        .then(user => {
-          req.flash('success_msg', 'Request Sent Successfully')
-          res.redirect('/user/dashboard')
-        })
-        .catch(error => {
-          res.render('error', {
-            error
-          })
+  const { notesId, date, time, address } = req.body
+  if (!notesId || !date || !time || !address) {
+    req.flash('error_msg', 'All fields are required')
+    res.redirect(`/notes/${req.params.id}`)
+  }
+  salesNotes
+    .aggregate([
+      {
+        $sort: { price: 1 }
+      }
+    ])
+    .then(data => {
+      salesNotes
+        .findOne({ notesId: data[0].notesId })
+        .populate('userId')
+        .populate('notesId')
+        .then(singleNote => {
+          transporter
+            .sendMail({
+              from: req.userData.email,
+              to: singleNote.userId.email,
+              subject:
+                'Request for your Notes of ' + singleNote.notesId.subject,
+              // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
+              html: `Hello ${singleNote.userId.name}, You got a client!!! This person wants your notes at given address and time. Click below link and approve for giving notes to them!!`
+            })
+            .then(response => {
+              if (response.accepted) {
+                var order = new Order({
+                  orderId: Date().getTime(),
+                  notes: notesId,
+                  user: singleNote.userId
+                })
+                order
+                  .save()
+                  .then(() => {
+                    req.flash(
+                      'success_msg',
+                      'Thankyou. Your Request has been sent and added to your orders page'
+                    )
+                    res.redirect('/user/dashboard')
+                  })
+                  .catch(errors => {
+                    req.flash('error_msg', errors.message)
+                    res.redirect('/user/dashboard')
+                  })
+              }
+            })
+            .catch(error => {
+              req.flash('error_msg', error.message)
+              res.redirect('/notes')
+            })
         })
     })
     .catch(err => {
-      res.render('error', {
-        err
-      })
+      req.flash('error_msg', err.message)
+      res.redirect('/notes')
     })
 })
 
@@ -93,7 +148,7 @@ router.get('/addNotes', (req, res, next) => {
 })
 
 router.post('/addNotes', (req, res, next) => {
-  console.log(req.userData);
+  console.log(req.userData)
   var newNote = new salesNotes({
     notesId: req.body.subject,
     userId: req.userData.id,
@@ -113,7 +168,7 @@ router.post('/addNotes', (req, res, next) => {
             res.redirect('/user/dashboard')
           })
           .catch(error => {
-			  console.log(error)
+            console.log(error)
             req.flash('error_msg', 'Cannot Save Because ' + error.message)
             res.redirect('/user/dashboard')
           })
@@ -129,57 +184,6 @@ router.post('/addNotes', (req, res, next) => {
       req.flash('error_msg', 'Something went wrong')
       res.redirect('/user/dashboard')
     })
-  //   UserNotes.find({ userId: req.userData.id })
-  //     .then(data => {
-  //       if (data.length <= 0) {
-  //         var newNote = new UserNotes({
-  //           userId: req.userData.id,
-  //           gender: req.userData.gender,
-  //           notes: {
-  //             notesId: req.body.subject,
-  //             price: req.body.price
-  //           }
-  //         })
-  //         console.log(newNote)
-  //         newNote
-  //           .save()
-  //           .then(() => {
-  //             req.flash('success_msg', 'Successfully Created Sales Order')
-  //             console.log('------------------------------')
-  //             res.redirect('/user/dashboard')
-  //           })
-  //           .catch(err => {
-  //             console.log(err)
-  //             res.render('error', {
-  //               err,
-  //               userData: req.userData
-  //             })
-  //           })
-  //       } else {
-  //         var newNotes = { notesId: req.body.subject, price: req.body.price }
-  //         UserNotes.updateOne(
-  //           { userId: req.userData.id },
-  //           { $push: { notes: newNotes } }
-  //         )
-  //           .then(data => {
-  //             req.flash('success_msg', 'Successfully Added Notes')
-  //             res.redirect('/user/dashboard')
-  //           })
-  //           .catch(err => {
-  //             res.render('error', {
-  //               err,
-  //               userData: req.userData
-  //             })
-  //           })
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //       res.render('error', {
-  //         err,
-  //         userData: req.userData
-  //       })
-  //     })
 })
 
 module.exports = router

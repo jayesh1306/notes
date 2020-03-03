@@ -13,7 +13,8 @@ router.get('/', (req, res, next) => {
       .find({
         $and: [
           { userId: { $ne: req.userData.id } },
-          { gender: req.userData.gender }
+          { gender: req.userData.gender },
+          { status: 0 }
         ]
       })
       .populate('notesId')

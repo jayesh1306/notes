@@ -16,6 +16,10 @@ var SalesNotesSchema = new mongoose.Schema({
   gender: {
     type: Number,
     required: true
+  },
+  status: {
+    type: Number,
+    default: 0 // 0 = Not bought, 1 = Pending, 2 = Approved, 3 = Delievered
   }
 })
 

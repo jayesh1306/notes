@@ -37,6 +37,11 @@
                                         role="tab" aria-controls="connectedServices" aria-selected="false">View Your
                                         Sale Notes</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#orders"
+                                        role="tab" aria-controls="connectedServices" aria-selected="false">View Your
+                                        Orders</a>
+                                </li>
                             </ul>
                             <div class="tab-content ml-1" id="myTabContent">
                                 <div class="tab-pane fade show active" id="basicInfo" role="tabpanel"
@@ -138,6 +143,34 @@
                                             <%}%>
                                                                 <%}else{%>
                                             <h3>You Have not posted any Notes to Sell</h3>
+                                            <%}%>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div class="tab-pane fade" id="orders" role="tabpanel"
+                                    aria-labelledby="ConnectedServices-tab">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Department</th>
+                                                <th>Semester</th>
+                                                <th>Subject</th>
+                                                <th>Price</th>
+                                                <th>Status</th>    
+                                            </tr>
+                                            </thead>
+                                            <tbody id="myTable">
+                                                <%if(orders.length !=0){%>
+                                            <%for(var i=0;i< orders.length;i++){%>
+                                            <tr>
+                                                <td><%=ordesr[i].notes.department %></td>
+                                                <td><%=orders[i].notes.semester%></td>
+                                                <td><%=orders[i].notes.subject%></td>
+                                                <td><%=orders[i].notes.price%></td>
+                                            </tr>
+                                            <%}%>
+                                                                <%}else{%>
+                                            <h3>You Have not Orderes any Notes</h3>
                                             <%}%>
                                             </tbody>
                                         </table>
