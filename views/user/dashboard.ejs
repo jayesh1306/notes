@@ -50,7 +50,7 @@
                                             <label style="font-weight:bold;">Full Name</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            Jamshaid Kamran
+                                            <p><%= userData.name %></p>
                                         </div>
                                     </div>
                                     <hr />
@@ -135,13 +135,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="myTable">
-                                                <%if(salesNotes.length>=1){%>
+                                                <%if(salesNotes.length !=0){%>
                                                             <%for(var i=0;i< salesNotes.length;i++){%>
                                                             <tr>
-                                                                <td><%=salesNotes[i].department %></td>
-                                                                <td><%=salesNotes[i].semester%></td>
-                                                                <td><%=salesNotes[i].subject%></td>
-                                                                <td><%=prices[i]%></td>
+                                                                <td><%=salesNotes[i].notesId.department %></td>
+                                                                <td><%=salesNotes[i].notesId.semester%></td>
+                                                                <td><%=salesNotes[i].notesId.subject%></td>
+                                                                <td><%=salesNotes[i].price%></td>
                                                             </tr>
                                                             <%}%>
                                                                 <%}else{%>

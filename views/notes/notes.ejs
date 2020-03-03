@@ -4,38 +4,14 @@
     <h4>Search for Notes</h4>
     <input class="form-control" id="myInput" type="text" placeholder="Search..">
     <br>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Department</th>
-                <th>Semester</th>
-                <th>Subject</th>
-                <th>Price</th>
-                <%if(userData){%>
-                <th>Buy</th>
-                <%}%>
-                </tr>
-            </thead>
-            <tbody id="myTable">
-                <%if(notes.length>=1){%>
-                <%for(var i=0;i< notes.length;i++){%>
-            <tr>
-                <td><%=notes[i].department %></td>
-                <td><%=notes[i].semester%></td>
-                <td><%=notes[i].subject%></td>
-                <td><%=price[i]%></td>
-                <%if(userData){%>
-                <td><a href="http://localhost:3000/user/notes/<%=notes[i].notesId%>"><i class="fa fa-cart-plus"></i></a>
-                </td>
-                <%}%>
-                </tr>
-                <%}%>
-                <%}else{%>
-                <h3>No Notes Available.. Come Back Soon </h3>
-                <%}%>
-            </tbody>
-        </table>
-    </div>
+    <%if(notes == null){%>
+    <h3>Sorry. No Notes available for You. Come Back Soon</h3>
+    <%}else{%>
+    <%for(var i=0;i < notes.length;i++){%>
+    <%=notes[i]%>
+    <%}%>
+    <%}%>
+</div>
 <script>
     $(document).ready(function () {
         $("#myInput").on("keyup", function () {
