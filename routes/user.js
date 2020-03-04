@@ -3,6 +3,7 @@ const db = require('../db/queries')
 const salesNotes = require('../models/SaleNotes')
 const UserNotes = require('../models/UserNotes')
 const nodemailer = require('nodemailer')
+const User = require('../models/User')
 const Order = require('../models/Order')
 
 let transporter = nodemailer.createTransport({
@@ -25,7 +26,7 @@ router.get('/dashboard', (req, res, next) => {
             .populate('notesId')
             .populate('userId')
             .then(salesNotes => {
-              Order.find({ userId: req.userData.id })
+              Order.find()
                 .populate('notes')
                 .then(orders => {
                   if (salesNotes) {
@@ -36,7 +37,6 @@ router.get('/dashboard', (req, res, next) => {
                       orders
                     })
                   } else {
-                    console.log(salesNotes)
                     res.render('user/dashboard', {
                       userData: user,
                       notes: notes,
@@ -66,10 +66,14 @@ router.get('/dashboard', (req, res, next) => {
 })
 
 router.get('/notes/:id', (req, res, next) => {
-  db.getNote(req.params.id)
+  salesNotes
+    .find({ notesId: req.params.id })
+    .populate('notesId')
+    .populate('userId')
     .then(note => {
       res.render('notes/buyNotes', {
-        note,
+        note: note[0].notesId,
+        price: note[0].price,
         userData: req.userData
       })
     })
@@ -81,8 +85,10 @@ router.get('/notes/:id', (req, res, next) => {
 })
 
 router.post('/notes/:id/buy', (req, res, next) => {
-  const { notesId, date, time, address } = req.body
-  if (!notesId || !date || !time || !address) {
+  var { notesId, date, time, address } = req.body
+  var d = new Date(date)
+  d = d.toString().slice(0, 10)
+  if (!notesId && !date && !time && !address) {
     req.flash('error_msg', 'All fields are required')
     res.redirect(`/notes/${req.params.id}`)
   }
@@ -94,29 +100,39 @@ router.post('/notes/:id/buy', (req, res, next) => {
     ])
     .then(data => {
       salesNotes
-        .findOne({ notesId: data[0].notesId })
+        .find({ notesId: data[0].notesId })
+        .sort({ price: 1 })
         .populate('userId')
         .populate('notesId')
         .then(singleNote => {
-          transporter
-            .sendMail({
-              from: req.userData.email,
-              to: singleNote.userId.email,
-              subject:
-                'Request for your Notes of ' + singleNote.notesId.subject,
-              // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
-              html: `Hello ${singleNote.userId.name}, You got a client!!! This person wants your notes at given address and time. Click below link and approve for giving notes to them!!`
-            })
-            .then(response => {
-              if (response.accepted) {
+          User.findOne({ _id: req.userData.id })
+            .then(async user => {
+              console.log(d)
+              var result = await transporter.sendMail({
+                from: req.userData.email,
+                to: singleNote[0].userId.email,
+                subject:
+                  'Request for your Notes of ' + singleNote[0].notesId.subject,
+                // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
+                html: `<h3>Hello ${singleNote[0].userId.name}</h3><br>Name: ${user.name}<br>Email: ${user.email}<br>Contact: ${user.contact}<br>Address: ${address}<br>Time: ${time}<br>Date: ${d}`
+              })
+              if (result.rejected.length > 0) {
+                req.flash('error_msg', 'Cannot Request for email')
+                res.redirect(`/notes/${req.params.id}`)
+              } else {
+                var date = new Date()
+                var orderId = date.getTime()
                 var order = new Order({
-                  orderId: Date().getTime(),
+                  orderId: orderId,
                   notes: notesId,
-                  user: singleNote.userId
+                  price: singleNote[0].price,
+                  user: singleNote[0].userId,
+                  status: 1
                 })
                 order
                   .save()
                   .then(() => {
+                    console.log('------------------')
                     req.flash(
                       'success_msg',
                       'Thankyou. Your Request has been sent and added to your orders page'
@@ -125,14 +141,16 @@ router.post('/notes/:id/buy', (req, res, next) => {
                   })
                   .catch(errors => {
                     req.flash('error_msg', errors.message)
-                    res.redirect('/user/dashboard')
+                    res.redirect(`/notes/${req.params.id}`)
                   })
               }
             })
-            .catch(error => {
-              req.flash('error_msg', error.message)
-              res.redirect('/notes')
+            .catch(err => {
+              res.json({ err: err.message })
             })
+        })
+        .catch(err => {
+          res.json({ err: err.message })
         })
     })
     .catch(err => {

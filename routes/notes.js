@@ -8,13 +8,11 @@ const Notes = require('../models/Notes')
 
 router.get('/', (req, res, next) => {
   if (req.userData != null) {
-    console.log(req.userData)
     salesNotes
       .find({
         $and: [
           { userId: { $ne: req.userData.id } },
-          { gender: req.userData.gender },
-          { status: 0 }
+          { gender: req.userData.gender }
         ]
       })
       .populate('notesId')
@@ -39,30 +37,31 @@ router.get('/', (req, res, next) => {
           userData: req.userData
         })
       })
-  }
-  salesNotes
-    .find()
-    .populate('notesId')
-    .populate('userId')
-    .then(notes => {
-      console.log(notes)
-      if (notes.length == 0) {
-        res.render('notes/notes', {
-          userData: res.userData,
-          notes: ''
-        })
-      } else {
-        res.render('notes/notes', {
-          userData: res.userData,
-          notes
-        })
-      }
-    })
-    .catch(err => {
-      req.flash('error', {
-        userData: req.userData
+  } else {
+    salesNotes
+      .find()
+      .populate('notesId')
+      .populate('userId')
+      .then(notes => {
+        console.log(notes)
+        if (notes.length == 0) {
+          res.render('notes/notes', {
+            userData: res.userData,
+            notes: ''
+          })
+        } else {
+          res.render('notes/notes', {
+            userData: res.userData,
+            notes
+          })
+        }
       })
-    })
+      .catch(err => {
+        req.flash('error', {
+          userData: req.userData
+        })
+      })
+  }
   // if (req.userData != null) {
   // 	db.getUser(req.userData.email)
   // 		.then(users => {

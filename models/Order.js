@@ -11,11 +11,15 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: Number,
-    deafult: 1 // 1 = pending, 2 = approved, 3 = Delievered
+    required: true // 1 = pending, 2 = approved, 3 = Delievered
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  price: {
+    type: Number,
+    default: 0
   }
 })
 
