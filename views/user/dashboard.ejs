@@ -160,18 +160,25 @@
                                             </tr>
                                             </thead>
                                             <tbody id="myTable">
-                                                <%if(orders.length !=0){%>
+                                            <%if(orders.length !=0){%>
                                             <%for(var i=0;i< orders.length;i++){%>
                                             <tr>
-                                                <td><%=ordesr[i].notes.department %></td>
+                                                <td><%=orders[i].notes.department %></td>
                                                 <td><%=orders[i].notes.semester%></td>
                                                 <td><%=orders[i].notes.subject%></td>
-                                                <td><%=orders[i].notes.price%></td>
+                                                <td><%=orders[i].price%></td>
+                                                <%if(orders[i].status == 1){%>
+                                                <td>Pending Approval</td>
+                                                <%}else if(orders[i].status == 2){%>
+                                                <td>Approved</td>
+                                                <%}else{%>
+                                                <td>Delievered</td>
+                                                <%}%>
                                             </tr>
                                             <%}%>
-                                                                <%}else{%>
-                                            <h3>You Have not Orderes any Notes</h3>
-                                            <%}%>
+                                                <%}else{%>
+                                                <h3>You Have not Orderes any Notes</h3>
+                                                <%}%>
                                             </tbody>
                                         </table>
                                 </div>
