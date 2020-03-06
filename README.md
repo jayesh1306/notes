@@ -7,7 +7,3 @@ For developement mode
 ```
 npm run dev 
 ```
-For Production mode
-```
-npm start
-```
