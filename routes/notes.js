@@ -3,7 +3,6 @@ const db = require('../db/queries')
 const router = express.Router()
 const User = require('../models/User')
 const salesNotes = require('../models/SaleNotes')
-const UserNotes = require('../models/UserNotes')
 const Notes = require('../models/Notes')
 
 router.get('/', (req, res, next) => {
