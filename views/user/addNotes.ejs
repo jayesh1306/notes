@@ -1,0 +1,36 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 col-sm-6 m-auto">
+            <%- include ('../partials/message')%>
+            <h3>Add Notes for sale from here</h3>
+            <hr>
+            <form action="/user/addNotes" method="post">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select name="subject" class="form-control" required>
+                        <option value="" selected>Select Subject</option>
+                        <%for(var i=0;i< notes.length;i++){%>
+                        <option value="<%= notes[i]._id%>">
+                            <%= notes[i].subject%></option>
+                        <%}%>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="price">Price :</label>
+                                                        <input type="number" class="form-control" name="price" required placeholder="Enter Zero if selling at no Cost">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

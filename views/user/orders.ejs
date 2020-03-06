@@ -1,0 +1,41 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-10 m-auto">
+            <%- include ('../partials/message')%>
+            <h3>Your Orders for Notes</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Subject</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    <%if(orders.length !=0){%>
+                    <%for(var i=0;i< orders.length;i++){%>
+                    <tr>
+                        <td><%=orders[i].notes.department %></td>
+                        <td><%=orders[i].notes.semester%></td>
+                        <td><%=orders[i].notes.subject%></td>
+                        <td><%=orders[i].price%></td>
+                        <%if(orders[i].status == 1){%>
+                        <td>Pending Approval</td>
+                        <%}else if(orders[i].status == 2){%>
+                        <td>Approved</td>
+                        <%}else{%>
+                        <td>Delievered</td>
+                        <%}%>
+                                                    </tr>
+                                                    <%}%>
+                        <%}else{%>
+                        <h3>You Have not Orderes any Notes</h3>
+                        <%}%>
+                                                    </tbody>
+                                                </table>
+                                        </div>
+        </div>
+    </div>
+</div>

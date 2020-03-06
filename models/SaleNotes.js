@@ -7,7 +7,8 @@ var SalesNotesSchema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    default: null
   },
   price: {
     type: Number,

@@ -1,0 +1,31 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-10 m-auto">
+            <%- include ('../partials/message')%>
+            <h3>Your notes for Selling</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Subject</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    <%if(sales.length !=0){%>
+                    <%for(var i=0;i< sales.length;i++){%>
+                    <tr>
+                        <td><%=sales[i].notesId.department %></td>
+                        <td><%=sales[i].notesId.semester%></td>
+                        <td><%=sales[i].notesId.subject%></td>
+                        <td><%=sales[i].price%></td>
+                    </tr>
+                    <%}%>
+                                                                <%}else{%>
+                    <h3>You Have not posted any Notes to Sell</h3>
+                    <%}%>
+                                            </tbody>
+                                        </table>
+                                </div>
+    </div>

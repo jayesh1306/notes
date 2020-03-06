@@ -16,53 +16,63 @@ let transporter = nodemailer.createTransport({
 
 const router = express.Router()
 
+router.get('/profile', (req, res, next) => {
+  db.getUser(req.userData.email)
+    .then(user => {
+      console.log(user)
+      res.render('user/profile', {
+        userData: user[0]
+      })
+    })
+    .catch()
+})
+
 //User Dashboard, Adding Sales NOtes, View Order Notes and Status of ordered NOtes.
 router.get('/dashboard', (req, res, next) => {
   db.getUser(req.userData.email)
     .then(user => {
-      db.getAllNotes()
-        .then(notes => {
-          salesNotes
-            .find({ userId: req.userData.id })
-            .populate('notesId')
-            .populate('userId')
-            .then(salesNotes => {
-              Order.find({ user: req.userData.id })
-                .populate('notes')
-                .then(orders => {
-                  if (salesNotes) {
-                    res.render('user/dashboard', {
-                      userData: user[0],
-                      notes: notes,
-                      salesNotes: salesNotes,
-                      orders
-                    })
-                  } else {
-                    res.render('user/dashboard', {
-                      userData: user,
-                      notes: notes,
-                      salesNotes: null
-                    })
-                  }
-                })
-                .catch(err => {
-                  req.flash('error_msg', err.message)
-                  res.redirect('/error')
-                })
-            })
-            .catch(err => {
-              req.flash('error_msg', err.message)
-              res.redirect('/error')
-            })
-        })
-        .catch(err => {
-          req.flash('error_msg', err.message)
-          res.redirect('/error')
-        })
+      console.log(user)
+      res.render('user/profile', {
+        userData: user[0]
+      })
+    })
+    .catch(err => {
+      req.flash(
+        'error_msg',
+        'Something went Wrong. Please try again in sometime'
+      )
+      res.redirect('/auth/login')
+    })
+})
+
+router.get('/addNotes', (req, res, next) => {
+  db.getAllNotes()
+    .then(notes => {
+      res.render('user/addNotes', {
+        userData: req.userData,
+        notes
+      })
     })
     .catch(err => {
       req.flash('error_msg', err.message)
-      res.redirect('/error')
+      res.redirect('/user/addNotes')
+    })
+})
+
+router.get('/sales', (req, res, next) => {
+  salesNotes
+    .find({ userId: req.userData.id })
+    .populate('notesId')
+    .populate('notesId')
+    .then(sales => {
+      res.render('user/sales', {
+        userData: req.userData,
+        sales
+      })
+    })
+    .catch(err => {
+      req.flash('error_msg', err.message)
+      res.redirect('/user/sales')
     })
 })
 
@@ -129,7 +139,7 @@ router.post('/notes/:id/buy', (req, res, next) => {
                   orderId: orderId,
                   notes: notesId,
                   price: singleNote[0].price,
-                  user: req.userData.id,
+                  buyer: req.userData.id,
                   status: 1
                 })
                 order
@@ -141,7 +151,6 @@ router.post('/notes/:id/buy', (req, res, next) => {
                         { status: 1 }
                       )
                       .then(data => {
-                        console.log(data)
                         req.flash(
                           'success_msg',
                           'Thankyou. Your Request has been sent and added to your orders page'
@@ -149,7 +158,8 @@ router.post('/notes/:id/buy', (req, res, next) => {
                         res.redirect('/user/dashboard')
                       })
                       .catch(err => {
-                        res.json({ err: err.message })
+                        req.flash('error_msg', errors.message)
+                        res.redirect(`/notes/${req.params.id}`)
                       })
                   })
                   .catch(errors => {
@@ -198,24 +208,24 @@ router.post('/addNotes', (req, res, next) => {
           .save()
           .then(() => {
             req.flash('success_msg', 'Successfully Saved Sales Order')
-            res.redirect('/user/dashboard')
+            res.redirect('/user/addNotes')
           })
           .catch(error => {
             console.log(error)
             req.flash('error_msg', 'Cannot Save Because ' + error.message)
-            res.redirect('/user/dashboard')
+            res.redirect('/user/addNotes')
           })
       } else {
         req.flash(
           'error_msg',
           'You cannot post same subject notes more than once'
         )
-        res.redirect('/user/dashboard')
+        res.redirect('/user/addNotes')
       }
     })
     .catch(err => {
       req.flash('error_msg', 'Something went wrong')
-      res.redirect('/user/dashboard')
+      res.redirect('/user/addNotes')
     })
 })
 
