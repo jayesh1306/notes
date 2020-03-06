@@ -129,7 +129,7 @@ router.post('/notes/:id/buy', (req, res, next) => {
                   orderId: orderId,
                   notes: notesId,
                   price: singleNote[0].price,
-                  user: singleNote[0].userId,
+                  user: req.userData.id,
                   status: 1
                 })
                 order
