@@ -32,6 +32,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 app.use(cookieParser())
+
 //View-Engine
 app.use(expressLayouts)
 app.set('view engine', 'ejs')

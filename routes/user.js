@@ -16,6 +16,7 @@ let transporter = nodemailer.createTransport({
 
 const router = express.Router()
 
+//User Dashboard, Adding Sales NOtes, View Order Notes and Status of ordered NOtes.
 router.get('/dashboard', (req, res, next) => {
   db.getUser(req.userData.email)
     .then(user => {
@@ -26,7 +27,7 @@ router.get('/dashboard', (req, res, next) => {
             .populate('notesId')
             .populate('userId')
             .then(salesNotes => {
-              Order.find()
+              Order.find({ user: req.userData.id })
                 .populate('notes')
                 .then(orders => {
                   if (salesNotes) {
@@ -65,6 +66,7 @@ router.get('/dashboard', (req, res, next) => {
     })
 })
 
+//Single notes display to buy
 router.get('/notes/:id', (req, res, next) => {
   salesNotes
     .find({ notesId: req.params.id })
@@ -84,6 +86,7 @@ router.get('/notes/:id', (req, res, next) => {
     })
 })
 
+//Request for taking notes
 router.post('/notes/:id/buy', (req, res, next) => {
   var { notesId, date, time, address } = req.body
   var d = new Date(date)
@@ -132,12 +135,22 @@ router.post('/notes/:id/buy', (req, res, next) => {
                 order
                   .save()
                   .then(() => {
-                    console.log('------------------')
-                    req.flash(
-                      'success_msg',
-                      'Thankyou. Your Request has been sent and added to your orders page'
-                    )
-                    res.redirect('/user/dashboard')
+                    salesNotes
+                      .updateOne(
+                        { notesId: singleNote[0].notesId._id },
+                        { status: 1 }
+                      )
+                      .then(data => {
+                        console.log(data)
+                        req.flash(
+                          'success_msg',
+                          'Thankyou. Your Request has been sent and added to your orders page'
+                        )
+                        res.redirect('/user/dashboard')
+                      })
+                      .catch(err => {
+                        res.json({ err: err.message })
+                      })
                   })
                   .catch(errors => {
                     req.flash('error_msg', errors.message)
@@ -159,12 +172,14 @@ router.post('/notes/:id/buy', (req, res, next) => {
     })
 })
 
+//Add Sales Notes
 router.get('/addNotes', (req, res, next) => {
   res.render('user/notes', {
     userData: req.userData
   })
 })
 
+//Post method to Add Sales NOtes
 router.post('/addNotes', (req, res, next) => {
   console.log(req.userData)
   var newNote = new salesNotes({
