@@ -1,7 +1,6 @@
 const express = require('express')
 const db = require('../db/queries')
 const salesNotes = require('../models/SaleNotes')
-const UserNotes = require('../models/UserNotes')
 const nodemailer = require('nodemailer')
 const User = require('../models/User')
 const Order = require('../models/Order')
