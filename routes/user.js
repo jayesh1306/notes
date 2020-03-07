@@ -191,18 +191,17 @@ router.post('/notes/:id/buy', (req, res, next) => {
     res.redirect(`/notes/${req.params.id}`)
   }
   salesNotes
-    .aggregate([
-      {
-        $sort: { price: 1 }
-      }
-    ])
+    .find({ status: 0 })
+    .sort({ price: 1 })
     .then(data => {
+      console.log(data[0].notesId)
       salesNotes
         .find({ $and: [{ notesId: data[0].notesId }, { status: 0 }] })
         .sort({ price: 1 })
         .populate('userId')
         .populate('notesId')
         .then(singleNote => {
+          console.log(singleNote)
           User.findOne({ _id: req.userData.id })
             .then(async user => {
               var result = await transporter.sendMail({
