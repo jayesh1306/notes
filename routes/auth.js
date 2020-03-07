@@ -95,7 +95,7 @@ router.post('/register', (req, res, next) => {
         //Email Service
         transporter
           .sendMail({
-            from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',
+            from: 'Notes Sharing App <no-reply@notesapp.com>',
             to: req.body.email,
             subject: 'Verification Link',
             // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`

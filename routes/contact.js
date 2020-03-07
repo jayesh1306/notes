@@ -24,7 +24,7 @@ router.post('/', (req, res, next) => {
 		.then(info => {
 			transporter.sendMail(
 				{
-					from: `prajapatijayesh.beis.16@acharya.ac.in`,
+					from: `Notes Sharing App <no-reply@notesapp.com>`,
 					to: req.body.email,
 					subject: 'Thank You : ' + req.body.name,
 					html: `Thankyou For Contacting us! We will get back to you soon`

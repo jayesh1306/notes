@@ -20,7 +20,7 @@ exports.sendEmail = (email, req, res) => {
 			res.cookie('token', 'Bearer ' + token);
 			transporter.sendMail(
 				{
-					from: 'Jayesh Prajapati <jayesh203.jp@gmail.com>',
+					from: 'Notes Sharing App <no-reply@notesapp.com>',
 					to: email,
 					subject: 'Verification Link',
 					// html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
@@ -65,7 +65,7 @@ exports.forgotPassword = email => {
 			expiresIn: 180
 		});
 		transporter.sendMail({
-			from: 'prajapatijayesh.beis.16@acharya.ac.in',
+			from: 'Notes Sharing App <no-reply@notesapp.com>',
 			to: email,
 			subject: `Reset Password Link. Valid for 3 Minutes Only`,
 			html: `Click <a href='https://notessapp.herokuapp.com/auth/forgotPassword/${token}'>Click</a> to reset Password`,

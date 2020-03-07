@@ -104,7 +104,7 @@ router.get('/requests/approve/:id', (req, res, next) => {
     .then(orders => {
       transporter
         .sendMail({
-          from: req.userData.email,
+          from: 'Notes Sharing App <no-reply@notesapp.com>',
           to: orders.buyer.email,
           subject: 'Approved your request for notes ' + orders.notes.subject,
           html: `Dear ${orders.buyer.name}, Your request for notes has been approved! Please be on time at the specified destination and time to avoid inconveniency!`
