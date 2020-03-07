@@ -198,7 +198,7 @@ router.post('/notes/:id/buy', (req, res, next) => {
     ])
     .then(data => {
       salesNotes
-        .find({ notesId: data[0].notesId })
+        .find({ $and: [{ notesId: data[0].notesId }, { status: 0 }] })
         .sort({ price: 1 })
         .populate('userId')
         .populate('notesId')
