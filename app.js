@@ -50,6 +50,9 @@ app.use(
 // Connect flash
 app.use(flash())
 
+//Static FIles
+app.use(express.static('public'))
+
 // Global variables
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg')
