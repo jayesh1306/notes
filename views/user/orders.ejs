@@ -3,6 +3,7 @@
         <div class="col-xs-12 col-md-12 col-sm-10 m-auto">
             <%- include ('../partials/message')%>
             <h3>Your Orders for Notes</h3>
+            <hr>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -20,11 +21,9 @@
                         <td><%=orders[i].notes.subject%></td>
                         <td><%=orders[i].price%></td>
                         <%if(orders[i].status == 1){%>
-                        <td>Pending Approval</td>
+                        <td style="color: 	#e7b416;"><b>Pending Approval <i class="fa fa-clock-o"></i></b></td>
                         <%}else if(orders[i].status == 2){%>
-                        <td>Approved</td>
-                        <%}else{%>
-                        <td>Delievered</td>
+                        <td style="color:green"><b>Approved <i class="fa fa-check"></i></b></td>
                         <%}%>
                                                     </tr>
                                                     <%}%>
