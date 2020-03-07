@@ -7,7 +7,6 @@
                 <thead>
                     <tr>
                         <th>Department</th>
-                        <th>Semester</th>
                         <th>Subject</th>
                         <th>Price</th>
                         <th>Status</th>
@@ -18,7 +17,6 @@
                     <%for(var i=0;i< orders.length;i++){%>
                     <tr>
                         <td><%=orders[i].notes.department %></td>
-                        <td><%=orders[i].notes.semester%></td>
                         <td><%=orders[i].notes.subject%></td>
                         <td><%=orders[i].price%></td>
                         <%if(orders[i].status == 1){%>

@@ -16,9 +16,7 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>Sr No</th>
                         <th>Department</th>
-                        <th>Semester</th>
                         <th>Subject</th>
                         <th>Price</th>
                         <th colspan="2" class="text-center">Action</th>
@@ -28,9 +26,7 @@
                     <%if(requests.length !=0){%>
                     <%for(var i=0;i< requests.length;i++){%>
                     <tr>
-                        <td><%= i+1%>.</td>
                         <td><%=requests[i].notes.department %></td>
-                        <td><%=requests[i].notes.semester%></td>
                         <td><%=requests[i].notes.subject%></td>
                         <td><%=requests[i].price%></td>
                         <%if(requests[i].status == 1){%>
