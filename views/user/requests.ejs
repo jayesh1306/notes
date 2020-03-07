@@ -1,0 +1,52 @@
+<style>
+    th {
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+    }
+</style>
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-10 m-auto">
+            <%- include ('../partials/message')%>
+            <h3>Your notes for Selling</h3>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Subject</th>
+                        <th>Price</th>
+                        <th colspan="2" class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    <%if(requests.length !=0){%>
+                    <%for(var i=0;i< requests.length;i++){%>
+                    <tr>
+                        <td><%= i+1%>.</td>
+                        <td><%=requests[i].notes.department %></td>
+                        <td><%=requests[i].notes.semester%></td>
+                        <td><%=requests[i].notes.subject%></td>
+                        <td><%=requests[i].price%></td>
+                        <%if(requests[i].status == 1){%>
+                        <td><a href="/user/requests/approve/<%=requests[i]._id%>"><button
+                                    class="btn btn-success">Approve</button></a></td>
+                        <td><a href="/user/requests/reject/<%=requests[i]._id%>"><button
+                                    class="btn btn-danger">Reject</button></a></td>
+                        <%}else{%>
+                        <td colspan="2" style="color: green;">Completed Order</td>
+                        <%}%>
+                    </tr>
+                    <%}%>
+                        <%}else{%>
+                        <h3>You Have not posted any Notes to Sell</h3>
+                        <%}%>
+                                            </tbody>
+                                        </table>
+                                </div>
+    </div>

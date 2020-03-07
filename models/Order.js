@@ -11,9 +11,13 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: Number,
-    default: 1 // 1 = pending, 2 = approved, 3 = Delievered
+    required: true // 1 = pending, 2 = approved, 3 = Delievered
   },
-  user: {
+  buyer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },

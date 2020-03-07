@@ -23,10 +23,15 @@ router.get('/profile', (req, res, next) => {
         userData: user[0]
       })
     })
-    .catch()
+    .catch(err => {
+      req.flash(
+        'error_msg',
+        'Something went Wrong. Please try again in sometime'
+      )
+      res.redirect('/auth/login')
+    })
 })
 
-//User Dashboard, Adding Sales NOtes, View Order Notes and Status of ordered NOtes.
 router.get('/dashboard', (req, res, next) => {
   db.getUser(req.userData.email)
     .then(user => {
@@ -75,6 +80,87 @@ router.get('/sales', (req, res, next) => {
     })
 })
 
+router.get('/requests', (req, res, next) => {
+  Order.find({ seller: req.userData.id })
+    .populate('notes')
+    .populate('seller')
+    .then(requests => {
+      console.log(requests)
+      res.render('user/requests', {
+        userData: req.userData,
+        requests
+      })
+    })
+    .catch(err => {
+      req.flash('error_msg', err.message)
+      res.redirect('/user/requests')
+    })
+})
+
+router.get('/requests/approve/:id', (req, res, next) => {
+  Order.findOne({ _id: req.params.id })
+    .populate('buyer')
+    .populate('notes')
+    .then(orders => {
+      transporter
+        .sendMail({
+          from: req.userData.email,
+          to: orders.buyer.email,
+          subject: 'Approved your request for notes ' + orders.notes.subject,
+          html: `Dear ${orders.buyer.name}, Your request for notes has been approved! Please be on time at the specified destination and time to avoid inconveniency!`
+        })
+        .then(response => {
+          Order.updateOne({ _id: req.params.id }, { status: 2 })
+            .then(response => {
+              if (response != null) {
+                req.flash(
+                  'success_msg',
+                  'Successfully Approved! Please be on time to give notes to avoid inconveniency'
+                )
+                res.redirect('/user/requests')
+              } else {
+                console.log('Eroor found')
+                req.flash('success_msg', 'Failed to Approve!!!!')
+                res.redirect('/user/requests')
+              }
+            })
+            .catch(error => {
+              console.log(error)
+              req.flash('error_msg', error.message)
+              res.redirect('/error')
+            })
+        })
+        .catch(error => {
+          console.log(error)
+          req.flash('error_msg', error.message)
+          res.redirect('/error')
+        })
+    })
+    .catch(error => {
+      console.log(error)
+      req.flash('error_msg', error.message)
+      res.redirect('/error')
+    })
+})
+
+router.get('/orders', (req, res, next) => {
+  Order.find({ buyer: req.userData.id })
+    .populate('notes')
+    .populate('buyer')
+    .then(orders => {
+      console.log(orders, req.userData.id)
+      res.render('user/orders', {
+        userData: req.userData,
+        orders
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/user/orders')
+    })
+})
+
 //Single notes display to buy
 router.get('/notes/:id', (req, res, next) => {
   salesNotes
@@ -119,9 +205,8 @@ router.post('/notes/:id/buy', (req, res, next) => {
         .then(singleNote => {
           User.findOne({ _id: req.userData.id })
             .then(async user => {
-              console.log(d)
               var result = await transporter.sendMail({
-                from: req.userData.email,
+                from: user.email,
                 to: singleNote[0].userId.email,
                 subject:
                   'Request for your Notes of ' + singleNote[0].notesId.subject,
@@ -134,12 +219,14 @@ router.post('/notes/:id/buy', (req, res, next) => {
               } else {
                 var date = new Date()
                 var orderId = date.getTime()
+                console.log(singleNote[0].userId._id, req.userData.id)
                 var order = new Order({
                   orderId: orderId,
                   notes: notesId,
                   price: singleNote[0].price,
                   buyer: req.userData.id,
-                  status: 1
+                  status: 1,
+                  seller: singleNote[0].userId._id
                 })
                 order
                   .save()
@@ -154,10 +241,10 @@ router.post('/notes/:id/buy', (req, res, next) => {
                           'success_msg',
                           'Thankyou. Your Request has been sent and added to your orders page'
                         )
-                        res.redirect('/user/dashboard')
+                        res.redirect('/user/orders')
                       })
                       .catch(err => {
-                        req.flash('error_msg', errors.message)
+                        req.flash('error_msg', err.message)
                         res.redirect(`/notes/${req.params.id}`)
                       })
                   })
@@ -168,10 +255,12 @@ router.post('/notes/:id/buy', (req, res, next) => {
               }
             })
             .catch(err => {
+              console.log(err)
               res.json({ err: err.message })
             })
         })
         .catch(err => {
+          console.log(err)
           res.json({ err: err.message })
         })
     })
@@ -199,7 +288,11 @@ router.post('/addNotes', (req, res, next) => {
   })
   salesNotes
     .findOne({
-      $and: [{ userId: req.userData.id }, { notesId: req.body.subject }]
+      $and: [
+        { userId: req.userData.id },
+        { notesId: req.body.subject },
+        { status: 1 }
+      ]
     })
     .then(note => {
       if (note == null) {

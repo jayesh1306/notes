@@ -10,6 +10,7 @@
                         <th>Semester</th>
                         <th>Subject</th>
                         <th>Price</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="myTable">
@@ -20,11 +21,16 @@
                         <td><%=sales[i].notesId.semester%></td>
                         <td><%=sales[i].notesId.subject%></td>
                         <td><%=sales[i].price%></td>
+                        <%if(sales[i].status == 1){%>
+                        <td style="color: red;">Sold Out</td>
+                        <%}else{%>
+                        <td style="color:red">No One Bought</td>
+                        <%}%>
                     </tr>
                     <%}%>
-                                                                <%}else{%>
-                    <h3>You Have not posted any Notes to Sell</h3>
-                    <%}%>
+                        <%}else{%>
+                        <h3>You Have not posted any Notes to Sell</h3>
+                        <%}%>
                                             </tbody>
                                         </table>
                                 </div>
