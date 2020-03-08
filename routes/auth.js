@@ -11,6 +11,7 @@ const nodemailer = require('nodemailer')
 
 const router = express.Router()
 
+//Email instance 
 let transporter = nodemailer.createTransport({
   service: 'gmail', // true for 465, false for other ports
   auth: {
@@ -19,6 +20,7 @@ let transporter = nodemailer.createTransport({
   }
 })
 
+//Get Login Page
 router.get('/login', (req, res, next) => {
   if (req.cookies.token) {
     res.redirect('/user/profile');
@@ -29,6 +31,7 @@ router.get('/login', (req, res, next) => {
   }
 })
 
+//Post Login 
 router.post('/login', (req, res, next) => {
   var username = req.body.username
   var password = sha256(req.body.password)
@@ -63,6 +66,7 @@ router.post('/login', (req, res, next) => {
     })
 })
 
+//Get Register Page
 router.get('/register', (req, res, next) => {
   if (req.userData) {
     res.redirect('/user/dashboard')
@@ -73,6 +77,7 @@ router.get('/register', (req, res, next) => {
   }
 })
 
+//Post Register
 router.post('/register', (req, res, next) => {
   if (req.cookies.token) {
     res.redirect('/user/profile');
@@ -156,12 +161,14 @@ router.post('/register', (req, res, next) => {
   }
 })
 
+//Send email if note verified
 router.get('/sendEmail', (req, res, next) => {
   res.render('authentication/email', {
     userData: req.userData
   })
 })
 
+//POst Send Email
 router.post('/sendEmail', (req, res, next) => {
   //Email Service
   emailService
@@ -188,13 +195,14 @@ router.post('/sendEmail', (req, res, next) => {
 })
 
 
-
+//Mobile Verification if not verified
 router.get('/mobile', (req, res, next) => {
   res.render('authentication/mobile', {
     userData: req.userData
   })
 })
 
+//Entering code for mobile verification
 router.get('/mobileVerification', (req, res, next) => {
   if (req.cookies.mobile == null) {
     smsService
@@ -217,6 +225,7 @@ router.get('/mobileVerification', (req, res, next) => {
   }
 })
 
+//Process Mobile verification using twilio
 router.post('/mobileVerification', (req, res, next) => {
   console.log(req.cookies, req.body)
   if (req.cookies.mobile && req.body.code.length === 6) {
@@ -252,6 +261,7 @@ router.post('/mobileVerification', (req, res, next) => {
   }
 })
 
+//Verify email from email sent
 router.get('/verify/:token', (req, res, next) => {
   console.log(req.params.token)
   var token = req.params.token
@@ -279,6 +289,7 @@ router.get('/verify/:token', (req, res, next) => {
   }
 })
 
+// Post Sending SMS 
 router.post('/sendSMS', (req, res, next) => {
   smsService
     .sendSMS(req.body.contact)
@@ -294,12 +305,14 @@ router.post('/sendSMS', (req, res, next) => {
     })
 })
 
+//Get frogot password Page
 router.get('/forgotPassword', (req, res, next) => {
   res.render('authentication/forgotPassword', {
     userData: req.userData
   })
 })
 
+//Post request Forgot password 
 router.post('/forgotPassword', (req, res, next) => {
   emailService
     .forgotPassword(req.body.email)
@@ -316,6 +329,7 @@ router.post('/forgotPassword', (req, res, next) => {
     })
 })
 
+//Verify email to change password
 router.get('/forgotPassword/:token', (req, res, next) => {
   var decoded = jwt.verify(
     localStorage.getItem('token').split(' ')[1],
@@ -343,6 +357,7 @@ router.get('/forgotPassword/:token', (req, res, next) => {
   }
 })
 
+//Change Password
 router.post('/changePassword', (req, res, next) => {
   var pass = sha256(req.body.password1)
   var email = jwt.verify(localStorage.getItem('token').split(' ')[1], 'secret')

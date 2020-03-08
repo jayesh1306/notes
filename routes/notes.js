@@ -5,6 +5,7 @@ const User = require('../models/User')
 const salesNotes = require('../models/SaleNotes')
 const Notes = require('../models/Notes')
 
+//Get Notes Page
 router.get('/', (req, res, next) => {
   if (req.userData != null) {
     salesNotes

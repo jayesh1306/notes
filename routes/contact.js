@@ -11,12 +11,14 @@ let transporter = nodemailer.createTransport({
 	}
 })
 
+//Get Contact page
 router.get('/', (req, res, next) => {
 	res.render('contact/contact', {
 		userData: req.userData
 	})
 })
 
+//Send Contact Email
 router.post('/', (req, res, next) => {
 	const { email, contact, msg } = req.body
 	emailService

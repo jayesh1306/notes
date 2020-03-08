@@ -15,6 +15,7 @@ let transporter = nodemailer.createTransport({
 
 const router = express.Router()
 
+//Get User Profile
 router.get('/profile', (req, res, next) => {
   db.getUser(req.userData.email)
     .then(user => {
@@ -32,6 +33,7 @@ router.get('/profile', (req, res, next) => {
     })
 })
 
+//Get User Dashboard(Profile)
 router.get('/dashboard', (req, res, next) => {
   db.getUser(req.userData.email)
     .then(user => {
@@ -49,6 +51,7 @@ router.get('/dashboard', (req, res, next) => {
     })
 })
 
+//Get add notes page
 router.get('/addNotes', (req, res, next) => {
   db.getAllNotes()
     .then(notes => {
@@ -63,6 +66,7 @@ router.get('/addNotes', (req, res, next) => {
     })
 })
 
+//Get Sales Page
 router.get('/sales', (req, res, next) => {
   salesNotes
     .find({ userId: req.userData.id })
@@ -80,6 +84,7 @@ router.get('/sales', (req, res, next) => {
     })
 })
 
+//Get all Requests Page
 router.get('/requests', (req, res, next) => {
   Order.find({ seller: req.userData.id })
     .populate('notes')
@@ -97,6 +102,7 @@ router.get('/requests', (req, res, next) => {
     })
 })
 
+//Approve Requests Route
 router.get('/requests/approve/:id', (req, res, next) => {
   Order.findOne({ _id: req.params.id })
     .populate('buyer')
@@ -143,6 +149,7 @@ router.get('/requests/approve/:id', (req, res, next) => {
     })
 })
 
+//Get Orders Page
 router.get('/orders', (req, res, next) => {
   Order.find({ buyer: req.userData.id })
     .populate('notes')
@@ -320,6 +327,7 @@ router.post('/addNotes', (req, res, next) => {
     })
 })
 
+//User Logout Route
 router.get('/logout', (req, res, next) => {
   res.clearCookie('token')
   req.flash('success_msg', 'Successfully Logged Out')
