@@ -179,11 +179,7 @@ router.post('/sendEmail', (req, res, next) => {
     })
 })
 
-router.get('/logout', (req, res, next) => {
-  res.clearCookie('token')
-  req.flash('success_msg', 'Successfully Logged Out')
-  res.redirect('/auth/login')
-})
+
 
 router.get('/mobile', (req, res, next) => {
   res.render('authentication/mobile', {

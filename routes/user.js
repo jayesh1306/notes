@@ -320,4 +320,10 @@ router.post('/addNotes', (req, res, next) => {
     })
 })
 
+router.get('/logout', (req, res, next) => {
+  res.clearCookie('token')
+  req.flash('success_msg', 'Successfully Logged Out')
+  res.redirect('/auth/login')
+})
+
 module.exports = router

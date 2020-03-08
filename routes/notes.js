@@ -31,7 +31,7 @@ router.get('/', (req, res, next) => {
           })
         }
       })
-      .catch(erro => {
+      .catch(err => {
         res.render('error', {
           err,
           userData: req.userData
@@ -39,7 +39,7 @@ router.get('/', (req, res, next) => {
       })
   } else {
     salesNotes
-      .find()
+      .find({ status: 0 })
       .populate('notesId')
       .populate('userId')
       .then(notes => {

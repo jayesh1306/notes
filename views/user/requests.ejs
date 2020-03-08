@@ -34,14 +34,16 @@
                                     class="btn btn-success">Approve</button></a></td>
                         <td><a href="/user/requests/reject/<%=requests[i]._id%>"><button
                                     class="btn btn-danger">Reject</button></a></td>
-                        <%}else{%>
+                        <%}else if (requests[i].status == 2){%>
                         <td colspan="2" style="color: green;"><b>Completed Order <i class="fa fa-check"></i></b></td>
-                        <%}%>
+                        <%}else{%>
+                        <td colspan="2" style="color: red;"><b>Cancelled <i class="fa fa-ban"></i></b></td>
                     </tr>
                     <%}%>
+                    <%}%>
                         <%}else{%>
-                        <h3>You Have not posted any Notes to Sell</h3>
-                        <%}%>
+                    <h3>You Have not posted any Notes to Sell</h3>
+                    <%}%>
                                             </tbody>
                                         </table>
                                 </div>

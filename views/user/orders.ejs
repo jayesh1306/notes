@@ -24,7 +24,9 @@
                         <td style="color: 	#e7b416;"><b>Pending Approval <i class="fa fa-clock-o"></i></b></td>
                         <%}else if(orders[i].status == 2){%>
                         <td style="color:green"><b>Approved <i class="fa fa-check"></i></b></td>
-                        <%}%>
+                        <%}else{%>
+                            <td style="color: red;"><b>Rejected <i class="fa fa-ban"></i></b></td>
+                            <%}%>
                                                     </tr>
                                                     <%}%>
                         <%}else{%>
