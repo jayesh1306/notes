@@ -20,9 +20,13 @@ let transporter = nodemailer.createTransport({
 })
 
 router.get('/login', (req, res, next) => {
-  res.render('authentication/login', {
-    userData: req.userData
-  })
+  if (req.cookies.token) {
+    res.redirect('/user/profile');
+  } else {
+    res.render('authentication/login', {
+      userData: req.userData
+    })
+  }
 })
 
 router.post('/login', (req, res, next) => {
@@ -70,82 +74,86 @@ router.get('/register', (req, res, next) => {
 })
 
 router.post('/register', (req, res, next) => {
-  var pass = sha256(req.body.password1)
+  if (req.cookies.token) {
+    res.redirect('/user/profile');
+  } else {
+    var pass = sha256(req.body.password1)
 
-  User.find({ $or: [{ email: req.body.email }, { contact: req.body.contact }] })
-    .then(user => {
-      if (user.length < 1) {
-        const userData = new User({
-          name: req.body.name,
-          contact: req.body.contact,
-          email: req.body.email,
-          password: pass,
-          gender: req.body.gender,
-          profile: 'https://ui-avatars.com/api/?name=' + req.body.name
-        })
-        const token = jwt.sign(
-          {
-            email: req.body.email
-          },
-          'secret',
-          {
-            expiresIn: 180
-          }
-        )
-        //Email Service
-        transporter
-          .sendMail({
-            from: 'Notes Sharing App <no-reply@notesapp.com>',
-            to: req.body.email,
-            subject: 'Verification Link',
-            // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
-            html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='https://notessapp.herokuapp.com/auth/verify/${token}'>Click</a>`
+    User.find({ $or: [{ email: req.body.email }, { contact: req.body.contact }] })
+      .then(user => {
+        if (user.length < 1) {
+          const userData = new User({
+            name: req.body.name,
+            contact: req.body.contact,
+            email: req.body.email,
+            password: pass,
+            gender: req.body.gender,
+            profile: 'https://ui-avatars.com/api/?name=' + req.body.name
           })
-          .then(info => {
-            userData
-              .save()
-              .then(user => {
-                smsService
-                  .sendSMS(req.body.contact)
-                  .then(data => {
-                    req.flash(
-                      'success_msg',
-                      'Account Registered, Please Verify Email and enter code here that we have sent to your mobile number'
-                    )
-                    res.cookie('token', 'Bearer ' + token)
-                    res.cookie('mobile', '+91' + user.contact)
-                    res.redirect('/auth/mobileVerification')
-                  })
-                  .catch(error => {
-                    console.log(error)
-                    req.flash(
-                      'error_msg',
-                      'Cannot Send SMS..Please try again Logging In'
-                    )
-                    res.redirect('/auth/login')
-                  })
-              })
-              .catch(err => {
-                req.flash('error_msg', err.message)
-                res.redirect('/error')
-              })
-          })
-          .catch(err => {
-            console.log(err)
-            req.flash(
-              'error_msg',
-              'Could not Send Email...Please try again in Sometime'
-            )
-            res.redirect('/auth/register')
-          })
-      } else {
-        req.flash('error_msg', 'User Account Already Registered')
-        res.redirect('/auth/login')
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
+          const token = jwt.sign(
+            {
+              email: req.body.email
+            },
+            'secret',
+            {
+              expiresIn: 180
+            }
+          )
+          //Email Service
+          transporter
+            .sendMail({
+              from: 'Notes Sharing App <no-reply@notesapp.com>',
+              to: req.body.email,
+              subject: 'Verification Link',
+              // html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='http://localhost:3000/auth/verify/${token}'>Click</a>`
+              html: `Please verify your account using this link. This Link is valid for 3 minutes only.  <a href='https://notessapp.herokuapp.com/auth/verify/${token}'>Click</a>`
+            })
+            .then(info => {
+              userData
+                .save()
+                .then(user => {
+                  smsService
+                    .sendSMS(req.body.contact)
+                    .then(data => {
+                      req.flash(
+                        'success_msg',
+                        'Account Registered, Please Verify Email and enter code here that we have sent to your mobile number'
+                      )
+                      res.cookie('token', 'Bearer ' + token)
+                      res.cookie('mobile', '+91' + user.contact)
+                      res.redirect('/auth/mobileVerification')
+                    })
+                    .catch(error => {
+                      console.log(error)
+                      req.flash(
+                        'error_msg',
+                        'Cannot Send SMS..Please try again Logging In'
+                      )
+                      res.redirect('/auth/login')
+                    })
+                })
+                .catch(err => {
+                  req.flash('error_msg', err.message)
+                  res.redirect('/error')
+                })
+            })
+            .catch(err => {
+              console.log(err)
+              req.flash(
+                'error_msg',
+                'Could not Send Email...Please try again in Sometime'
+              )
+              res.redirect('/auth/register')
+            })
+        } else {
+          req.flash('error_msg', 'User Account Already Registered')
+          res.redirect('/auth/login')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 })
 
 router.get('/sendEmail', (req, res, next) => {
