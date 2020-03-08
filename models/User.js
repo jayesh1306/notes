@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
   profile: {
     type: String,
     required: true
+  },
+  createdOn: {
+    type: Date,
+    default: Date.now()
   }
 })
 
