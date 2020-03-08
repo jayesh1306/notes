@@ -13,7 +13,7 @@
         <div class="col-xs-12 col-md-12 col-sm-10 m-auto">
             <%- include ('../partials/message')%>
             <h3>Your notes for Selling</h3>
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped table-bordered" id="myTable">
                 <thead>
                     <tr>
                         <th>Department</th>
@@ -48,3 +48,14 @@
                                         </table>
                                 </div>
     </div>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
