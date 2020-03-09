@@ -25,6 +25,7 @@ router.get('/profile', (req, res, next) => {
       })
     })
     .catch(err => {
+      console.log(err)
       req.flash(
         'error_msg',
         'Something went Wrong. Please try again in sometime'
@@ -32,6 +33,7 @@ router.get('/profile', (req, res, next) => {
       res.redirect('/auth/login')
     })
 })
+
 
 //Get User Dashboard(Profile)
 router.get('/dashboard', (req, res, next) => {

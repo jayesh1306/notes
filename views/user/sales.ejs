@@ -2,8 +2,6 @@
     <div class="row">
         <div class="col-xs-12 col-md-12 col-sm-10 m-auto">
             <%- include ('../partials/message')%>
-            <h3>Your notes for Selling</h3>
-            <h4>Search for Notes</h4>
             <input class="form-control" id="myInput" type="text" placeholder="Search..">
             <hr>
             <table class="table table-striped" id="myTable">
@@ -30,7 +28,7 @@
                         <%}%>
                         <td style="text-align: center;"><a href="/user/sales/edit/<%=sales[i].notesId._id%>"><i
                             class="fa fa-pencil" style="font-size: 20px;"></i></a></td>
-                        <td style="text-align: center;"><a href="/user/sales/delete/<%=sales[i].notesId._id%>"><i
+                        <td style="text-align: center;"><a onclick="return confirm('Sure you want to delete?')" href="/user/sales/delete/<%=sales[i].notesId._id%>"><i
                                     class="fa fa-trash" style="font-size: 20px;"></i></a></td>
                     </tr>
                     <%}%>
