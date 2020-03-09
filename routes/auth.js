@@ -167,7 +167,7 @@ router.get('/sendEmail', (req, res, next) => {
   })
 })
 
-//POst Send Email
+//Post Send Email
 router.post('/sendEmail', (req, res, next) => {
   //Email Service
   emailService
@@ -203,25 +203,19 @@ router.get('/mobile', (req, res, next) => {
 
 //Entering code for mobile verification
 router.get('/mobileVerification', (req, res, next) => {
-  if (req.cookies.mobile == null) {
-    smsService
-      .sendSMS(req.query.contact)
-      .then(data => {
-        res
-          .cookie('mobile', '+91' + req.query.contact)
-          .render('authentication/mobileVerify', {
-            userData: req.userData
-          })
-      })
-      .catch(err => {
-        req.flash('error_msg', err.message)
-        res.redirect('/auth/mobile')
-      })
-  } else {
-    res.render('authentication/mobileVerify', {
-      userData: req.userData
+  smsService
+    .sendSMS(req.query.contact)
+    .then(data => {
+      res
+        .cookie('mobile', '+91' + req.query.contact)
+        .render('authentication/mobileVerify', {
+          userData: req.userData
+        })
     })
-  }
+    .catch(err => {
+      req.flash('error_msg', err.message)
+      res.redirect('/auth/mobile')
+    })
 })
 
 //Process Mobile verification using twilio
