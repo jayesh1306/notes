@@ -124,7 +124,7 @@ router.post('/register', (req, res, next) => {
                       )
                       res.cookie('token', 'Bearer ' + token)
                       res.cookie('mobile', '+91' + user.contact)
-                      res.redirect('/auth/mobileVerification')
+                      res.render('authentication/mobileVerify')
                     })
                     .catch(error => {
                       console.log(error)
