@@ -22,7 +22,7 @@ let transporter = nodemailer.createTransport({
 
 //Get Login Page
 router.get('/login', (req, res, next) => {
-  if (req.cookies.token) {
+  if (req.cookies.token != null) {
     res.redirect('/user/profile')
   } else {
     res.render('authentication/login', {
@@ -174,7 +174,7 @@ router.get('/sendEmail', (req, res, next) => {
 router.post('/sendEmail', (req, res, next) => {
   //Email Service
   emailService
-    .sendEmail(req.body.email)
+    .sendEmail(req.body.email, null, res)
     .then(info => {
       db.getUser(req.body.email)
         .then(user => {
