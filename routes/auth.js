@@ -9,6 +9,7 @@ const Notes = require('../models/Notes')
 const sha256 = require('sha256')
 const nodemailer = require('nodemailer')
 const checkAuth = require('../middleware/checkAuth')
+const verify = require('../middleware/verify')
 
 const router = express.Router()
 
@@ -29,7 +30,7 @@ router.get('/login', checkAuth, (req, res, next) => {
 })
 
 //Post Login
-router.post('/login', (req, res, next) => {
+router.post('/login', verify, (req, res, next) => {
   var username = req.body.username
   var password = sha256(req.body.password)
   db.getUser(username)
