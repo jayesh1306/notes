@@ -30,7 +30,7 @@ router.get('/login', checkAuth, (req, res, next) => {
 })
 
 //Post Login
-router.post('/login', verify, (req, res, next) => {
+router.post('/login', (req, res, next) => {
   var username = req.body.username
   var password = sha256(req.body.password)
   db.getUser(username)
