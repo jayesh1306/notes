@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer')
 
 const router = express.Router()
 
-//Email instance 
+//Email instance
 let transporter = nodemailer.createTransport({
   service: 'gmail', // true for 465, false for other ports
   auth: {
@@ -23,7 +23,7 @@ let transporter = nodemailer.createTransport({
 //Get Login Page
 router.get('/login', (req, res, next) => {
   if (req.cookies.token) {
-    res.redirect('/user/profile');
+    res.redirect('/user/profile')
   } else {
     res.render('authentication/login', {
       userData: req.userData
@@ -31,11 +31,10 @@ router.get('/login', (req, res, next) => {
   }
 })
 
-//Post Login 
+//Post Login
 router.post('/login', (req, res, next) => {
   var username = req.body.username
   var password = sha256(req.body.password)
-  var id
   db.getUser(username)
     .then(user => {
       if (user.length < 1) {
@@ -80,11 +79,13 @@ router.get('/register', (req, res, next) => {
 //Post Register
 router.post('/register', (req, res, next) => {
   if (req.cookies.token) {
-    res.redirect('/user/profile');
+    res.redirect('/user/profile')
   } else {
     var pass = sha256(req.body.password1)
 
-    User.find({ $or: [{ email: req.body.email }, { contact: req.body.contact }] })
+    User.find({
+      $or: [{ email: req.body.email }, { contact: req.body.contact }]
+    })
       .then(user => {
         if (user.length < 1) {
           const userData = new User({
@@ -157,6 +158,7 @@ router.post('/register', (req, res, next) => {
       })
       .catch(err => {
         console.log(err)
+        res.json(err)
       })
   }
 })
@@ -190,10 +192,10 @@ router.post('/sendEmail', (req, res, next) => {
         'error_msg',
         'Something Went Wrong...Please try again in Sometime'
       )
+      console.log(err)
       res.redirect('/auth/login')
     })
 })
-
 
 //Mobile Verification if not verified
 router.get('/mobile', (req, res, next) => {
@@ -251,13 +253,14 @@ router.post('/mobileVerification', (req, res, next) => {
       })
       .catch(err => {
         console.log(err)
+        res.json(err)
       })
   } else {
     req.flash(
       'error_msg',
       'Phone Number or Code is Invalid....Please try again log in'
     )
-    res.redirect('/auth/login')
+    res.redirect('/auth/mobileVerification')
   }
 })
 
@@ -289,7 +292,7 @@ router.get('/verify/:token', (req, res, next) => {
   }
 })
 
-// Post Sending SMS 
+// Post Sending SMS
 router.post('/sendSMS', (req, res, next) => {
   smsService
     .sendSMS(req.body.contact)
@@ -300,6 +303,7 @@ router.post('/sendSMS', (req, res, next) => {
         .redirect('/auth/mobileVerification')
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/auth/mobile')
     })
@@ -312,7 +316,7 @@ router.get('/forgotPassword', (req, res, next) => {
   })
 })
 
-//Post request Forgot password 
+//Post request Forgot password
 router.post('/forgotPassword', (req, res, next) => {
   emailService
     .forgotPassword(req.body.email)
@@ -324,6 +328,7 @@ router.post('/forgotPassword', (req, res, next) => {
       res.redirect('/auth/forgotPassword')
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/auth/forgotPassword')
     })
