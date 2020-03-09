@@ -8,6 +8,7 @@ const User = require('../models/User')
 const Notes = require('../models/Notes')
 const sha256 = require('sha256')
 const nodemailer = require('nodemailer')
+const checkAuth = require('../middleware/checkAuth')
 
 const router = express.Router()
 
@@ -21,14 +22,10 @@ let transporter = nodemailer.createTransport({
 })
 
 //Get Login Page
-router.get('/login', (req, res, next) => {
-  if (req.cookies.token != null) {
-    res.redirect('/user/profile')
-  } else {
-    res.render('authentication/login', {
-      userData: req.userData
-    })
-  }
+router.get('/login', checkAuth, (req, res, next) => {
+  res.render('authentication/login', {
+    userData: req.userData
+  })
 })
 
 //Post Login
