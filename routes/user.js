@@ -84,6 +84,61 @@ router.get('/sales', (req, res, next) => {
     })
 })
 
+//Get Edit Page
+router.get('/sales/edit/:id', (req, res, next) => {
+  salesNotes.findOne({
+    $and: [
+      { notesId: req.params.id },
+      { userId: req.userData.id }
+    ]
+  }).populate('notesId').then(note => {
+    console.log(note)
+    res.render('user/editNotes', {
+      userData: req.userData,
+      note
+    })
+  }).catch(err => {
+    console.log(err);
+    req.flash('error_msg', err.message);
+    res.redirect('/error');
+  })
+})
+
+router.post('/sales/edit/:id', (req, res, next) => {
+  var newData = {
+    price: req.body.price
+  }
+  salesNotes.updateOne({
+    $and: [
+      { notesId: req.params.id },
+      { userId: req.userData.id }
+    ]
+  }, newData).then(note => {
+    req.flash('success_msg', 'Successfullt Updated');
+    res.redirect('/user/sales');
+  }).catch(err => {
+    console.log(err);
+    req.flash('error_msg', err.message);
+    res.redirect('/error');
+  })
+})
+
+router.get('/sales/delete/:id', (req, res, next) => {
+  salesNotes.deleteOne({
+    $and: [
+      { notesId: req.params.id },
+      { userId: req.userData.id }
+    ]
+  }).then(response => {
+    req.flash('success_msg', 'Successfully deleted');
+    res.redirect('/user/sales');
+  }).catch(err => {
+    console.log(err);
+    req.flash('error_msg', err.message);
+    res.redirect('/error');
+  })
+})
+
 //Get all Requests Page
 router.get('/requests', (req, res, next) => {
   Order.find({ seller: req.userData.id })

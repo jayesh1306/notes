@@ -12,8 +12,8 @@
                         <th>Department</th>
                         <th>Subject</th>
                         <th>Price</th>
-                        <th colspan="2">Action</th>
                         <th>Status</th>
+                        <th colspan="2" style="text-align: center;">Action</th>
                     </tr>
                 </thead>
                 <tbody id="myTable">
@@ -23,18 +23,20 @@
                         <td><%=sales[i].notesId.department %></td>
                         <td><%=sales[i].notesId.subject%></td>
                         <td><%=sales[i].price%></td>
-                        <td><a href="/user/sales/edit/<%=sales[i].notesId._id%>"><i class="fa fa-pencil"></i></a></td>
-                        <td><a href="/user/sales/delete/<%=sales[i].notesId._id%>"><i class="fa fa-trash"></i></a></td>
                         <%if(sales[i].status == 1){%>
                         <td style="color: red;">Sold Out</td>
                         <%}else{%>
                         <td style="color:red">No One Bought</td>
                         <%}%>
+                        <td style="text-align: center;"><a href="/user/sales/edit/<%=sales[i].notesId._id%>"><i
+                            class="fa fa-pencil" style="font-size: 20px;"></i></a></td>
+                        <td style="text-align: center;"><a href="/user/sales/delete/<%=sales[i].notesId._id%>"><i
+                                    class="fa fa-trash" style="font-size: 20px;"></i></a></td>
                     </tr>
                     <%}%>
                         <%}else{%>
-                        <h3>You Have not posted any Notes to Sell</h3>
-                        <%}%>
+                    <h3>You Have not posted any Notes to Sell</h3>
+                    <%}%>
                                             </tbody>
                                         </table>
                                 </div>

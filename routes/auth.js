@@ -166,28 +166,39 @@ router.get('/sendEmail', (req, res, next) => {
 //Post Send Email
 router.post('/sendEmail', (req, res, next) => {
   //Email Service
-  emailService
-    .sendEmail(req.body.email, null, res)
-    .then(info => {
-      db.getUser(req.body.email)
-        .then(user => {
-          console.log(req.cookies)
-          req.flash('success_msg', 'Sent Email, Please Verify Email')
-          res.cookie('token', 'Bearer ' + info.token).redirect('/auth/login')
+  User.findOne({ email: req.body.email }).then(user => {
+    if (!user) {
+      req.flash('error_msg', 'Email Doesn\'t Exist');
+      res.redirect('/auth/login');
+    } else {
+      emailService
+        .sendEmail(req.body.email, null, res)
+        .then(info => {
+          db.getUser(req.body.email)
+            .then(user => {
+              console.log(req.cookies)
+              req.flash('success_msg', 'Sent Email, Please Verify Email')
+              res.cookie('token', 'Bearer ' + info.token).redirect('/auth/login')
+            })
+            .catch(err => {
+              req.flash('error_msg', err.message)
+              res.redirect('/error')
+            })
         })
         .catch(err => {
-          req.flash('error_msg', err.message)
-          res.redirect('/error')
+          req.flash(
+            'error_msg',
+            'Something Went Wrong...Please try again in Sometime'
+          )
+          console.log(err)
+          res.redirect('/auth/login')
         })
-    })
-    .catch(err => {
-      req.flash(
-        'error_msg',
-        'Something Went Wrong...Please try again in Sometime'
-      )
-      console.log(err)
-      res.redirect('/auth/login')
-    })
+    }
+  }).catch(err => {
+    console.log(err);
+    req.flash('error_msg', err.message);
+    res.redirect('/auth/sendEmail');
+  });
 })
 
 //Mobile Verification if not verified

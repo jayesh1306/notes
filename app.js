@@ -10,12 +10,13 @@ const path = require('path')
 const flash = require('connect-flash')
 const session = require('express-session')
 const morgan = require('morgan')
+
 //App Initialization
 const app = express()
 
 //Database Initialization
 mongoose.connect(
-  process.env.MONGO_URL,
+  process.env.MONGO_URI,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, data) => {
     if (err) {

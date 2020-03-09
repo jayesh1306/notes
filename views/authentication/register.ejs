@@ -7,8 +7,9 @@
             <form action="/auth/register" class="needs-validation" method="POST" novalidate>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" pattern="^[a-z0-9.a-z0-9.a-z0-9]+@[Aa][Cc][Hh][Aa][Rr][Yy][Aa].[Aa][Cc].[Ii][Nn]$"
-                        autofocus class="form-control" id="uname" placeholder="Enter email" name="email" required>
+                    <input type="email"
+                        pattern="^[a-z0-9.a-z0-9.a-z0-9]+@[Aa][Cc][Hh][Aa][Rr][Yy][Aa].[Aa][Cc].[Ii][Nn]$" autofocus
+                        class="form-control" id="uname" placeholder="Enter email" name="email" required>
                     <div class="invalid-feedback">Invalid or Use Acharya Mail Id Only</div>
                 </div>
                 <div class="form-group">
@@ -32,14 +33,14 @@
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password:</label>
-                    <input type="password" class="form-control" id="pwd1" placeholder="Enter password" name="password1"
-                        required>
+                    <input type="password" maxlength="6" class="form-control" id="pwd1" placeholder="Enter password"
+                        name="password1" required>
                     <div class="valid-feedback">Valid.</div>
                     <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
                 <div class="form-group">
                     <label for="pwd">Confirm Password:</label>
-                    <input onkeyup="pass()" type="password" class="form-control" id="pwd2"
+                    <input onkeyup="pass()" maxlength="6" type="password" class="form-control" id="pwd2"
                         placeholder="Enter Password Again" name="password2" required>
                     <p id="msg" style="color:red;display: none;">Password do not match</p>
                     <div class="invalid-feedback">Please fill out this field.</div>
@@ -72,11 +73,16 @@
     })();
 
     function pass() {
-        if (document.getElementById('pwd2').value != document.getElementById('pwd1').value) {
-            document.getElementById('msg').style.display = 'block';
+        if (document.getElementById('pwd1').value.length < 6) {
+            return false;
         } else {
-            document.getElementById('msg').style.display = 'none';
-            return
+            if (document.getElementById('pwd2').value != document.getElementById('pwd1').value) {
+                document.getElementById('msg').style.display = 'block';
+                return false;
+            } else {
+                document.getElementById('msg').style.display = 'none';
+                return true;
+            }
 
         }
     }
