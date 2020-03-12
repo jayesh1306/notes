@@ -11,6 +11,7 @@
                         <th>Department</th>
                         <th>Subject</th>
                         <th>Price</th>
+                        <th>Chat</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -21,6 +22,7 @@
                         <td><%=orders[i].notes.department %></td>
                         <td><%=orders[i].notes.subject%></td>
                         <td><%=orders[i].price%></td>
+                        <td><a href="/user/orders/chat/<%=orders[i]._id%>"><i class="fa fa-commenting-o"></i></a></td>
                         <%if(orders[i].status == 1){%>
                         <td style="color: 	#e7b416;"><b>Pending Approval <i class="fa fa-clock-o"></i></b></td>
                         <%}else if(orders[i].status == 2){%>

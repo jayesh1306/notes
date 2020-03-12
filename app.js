@@ -10,9 +10,21 @@ const path = require('path')
 const flash = require('connect-flash')
 const session = require('express-session')
 const morgan = require('morgan')
+const Message = require('./models/Message')
 
 //App Initialization
 const app = express()
+
+//Socketio Initialization
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
+io.on('connection', function (socket) {
+  socket.on('message', function (data) {
+    socket.emit('receive', data)
+    var msg = new Message(data)
+    msg.save()
+  })
+})
 
 //Database Initialization
 mongoose.connect(
@@ -74,6 +86,6 @@ app.use((req, res, next) => {
 //App Serving
 var port = process.env.PORT || 3000
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
