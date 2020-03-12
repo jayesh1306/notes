@@ -28,7 +28,7 @@ io.on('connection', function (socket) {
 
 //Database Initialization
 mongoose.connect(
-  process.env.MONGO_URI,
+  process.env.MONGO_URL,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, data) => {
     if (err) {
