@@ -32,7 +32,7 @@
 
 <script>
     function send() {
-        var socket = io.connect('http://localhost:3000');
+        var socket = io.connect();
         var by = document.getElementById('buyer').value
         var seller = document.getElementById('seller').value
         var text = document.getElementById('message').value;
