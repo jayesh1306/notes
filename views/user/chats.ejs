@@ -12,7 +12,9 @@
                     <%if(messages[i].message.text == null){%>
                     <%continue;%>
                     <%}else{%>
-                    <p> <%=messages[i].message.text%></p>
+                    <p style="text-align: right;"><b><%=messages[i].message.by.name%> : </b>
+                        <%=messages[i].message.text%>
+                    </p>
                     <%}%>
                     <%}%>
                 </div>
@@ -33,13 +35,14 @@
 <script>
     function send() {
         var socket = io.connect();
-        var by = document.getElementById('buyer').value
+        var by = document.getElementById('user').value
         var seller = document.getElementById('seller').value
         var text = document.getElementById('message').value;
         var user = document.getElementById('user').value;
         var message = {
             text, by
         }
+        $(".card").stop().animate({scrollTop: $(".card")[0].scrollHeight}, 1000);
         socket.emit('message', {
             buyer: by, seller, message
         });
