@@ -1,0 +1,50 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 col-xs-6 col-sm-6 col-lg-12 m-auto">
+            <h3>Chat</h3>
+            <hr>
+            <div class="card" style="max-height: 300px;overflow: scroll;">
+                <div class="card-title p-4">
+                    <%for(var i=0; i < messages.length;i++){%>
+                    <input type="hidden" readonly id="user" value="<%=userData.id%>">
+                    <input type="hidden" readonly id="buyer" value="<%=messages[i].buyer%>">
+                    <input type="hidden" readonly id="seller" value="<%=messages[i].seller%>">
+                    <%if(messages[i].message.text == null){%>
+                    <%continue;%>
+                    <%}else{%>
+                    <p> <%=messages[i].message.text%></p>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div><br>
+            <div class="card p-1">
+                <div class="row">
+                    <div class="col-md-11"><input type="text" id="message" class="form-control"></div>
+                    <div onclick="send()" class="col-md-1 pl-4 pt-1 pb-2" style="text-align: left;"><i
+                            class="fa fa-send"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+<script>
+    function send() {
+        var socket = io.connect('http://localhost:3000');
+        var by = document.getElementById('buyer').value
+        var seller = document.getElementById('seller').value
+        var text = document.getElementById('message').value;
+        var user = document.getElementById('user').value;
+        var message = {
+            text, by
+        }
+        socket.emit('message', {
+            buyer: by, seller, message
+        });
+        socket.on('receive', function (data) {
+            $(".card-title").append($(`<p style="text-align: right;"><b>You : <b>${data.message.text}</p>`));
+        })
+    }
+</script>

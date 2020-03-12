@@ -3,6 +3,7 @@ const db = require('../db/queries')
 const salesNotes = require('../models/SaleNotes')
 const nodemailer = require('nodemailer')
 const User = require('../models/User')
+const Message = require('../models/Message')
 const Order = require('../models/Order')
 
 let transporter = nodemailer.createTransport({
@@ -33,7 +34,6 @@ router.get('/profile', (req, res, next) => {
       res.redirect('/auth/login')
     })
 })
-
 
 //Get User Dashboard(Profile)
 router.get('/dashboard', (req, res, next) => {
@@ -88,57 +88,61 @@ router.get('/sales', (req, res, next) => {
 
 //Get Edit Page
 router.get('/sales/edit/:id', (req, res, next) => {
-  salesNotes.findOne({
-    $and: [
-      { notesId: req.params.id },
-      { userId: req.userData.id }
-    ]
-  }).populate('notesId').then(note => {
-    console.log(note)
-    res.render('user/editNotes', {
-      userData: req.userData,
-      note
+  salesNotes
+    .findOne({
+      $and: [{ notesId: req.params.id }, { userId: req.userData.id }]
     })
-  }).catch(err => {
-    console.log(err);
-    req.flash('error_msg', err.message);
-    res.redirect('/error');
-  })
+    .populate('notesId')
+    .then(note => {
+      console.log(note)
+      res.render('user/editNotes', {
+        userData: req.userData,
+        note
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/error')
+    })
 })
 
 router.post('/sales/edit/:id', (req, res, next) => {
   var newData = {
     price: req.body.price
   }
-  salesNotes.updateOne({
-    $and: [
-      { notesId: req.params.id },
-      { userId: req.userData.id }
-    ]
-  }, newData).then(note => {
-    req.flash('success_msg', 'Successfullt Updated');
-    res.redirect('/user/sales');
-  }).catch(err => {
-    console.log(err);
-    req.flash('error_msg', err.message);
-    res.redirect('/error');
-  })
+  salesNotes
+    .updateOne(
+      {
+        $and: [{ notesId: req.params.id }, { userId: req.userData.id }]
+      },
+      newData
+    )
+    .then(note => {
+      req.flash('success_msg', 'Successfullt Updated')
+      res.redirect('/user/sales')
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/error')
+    })
 })
 
 router.get('/sales/delete/:id', (req, res, next) => {
-  salesNotes.deleteOne({
-    $and: [
-      { notesId: req.params.id },
-      { userId: req.userData.id }
-    ]
-  }).then(response => {
-    req.flash('success_msg', 'Successfully deleted');
-    res.redirect('/user/sales');
-  }).catch(err => {
-    console.log(err);
-    req.flash('error_msg', err.message);
-    res.redirect('/error');
-  })
+  salesNotes
+    .deleteOne({
+      $and: [{ notesId: req.params.id }, { userId: req.userData.id }]
+    })
+    .then(response => {
+      req.flash('success_msg', 'Successfully deleted')
+      res.redirect('/user/sales')
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/error')
+    })
 })
 
 //Get all Requests Page
@@ -222,6 +226,58 @@ router.get('/orders', (req, res, next) => {
       console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/user/orders')
+    })
+})
+
+//Chats
+router.get('/orders/chat/:id', (req, res, next) => {
+  Order.findOne({ _id: req.params.id })
+    .then(order => {
+      message = {
+        text: 'hiii',
+        by: req.userData.id
+      }
+      Message.find({ $or: [{ buyer: order.buyer }, { seller: order.seller }] })
+        .populate('message.by')
+        .then(messages => {
+          if (messages.length == 0) {
+            var newMessage = new Message({
+              seller: order.seller,
+              buyer: order.buyer
+            })
+            newMessage
+              .save()
+              .then(msg => {
+                msg.seller = order.seller
+                msg.buyer = order.buyer
+                res.render('user/chats', {
+                  userData: req.userData,
+                  messages: msg
+                })
+              })
+              .catch(err => {
+                console.log(err)
+                req.flash('error_msg', err.messages)
+                res.redirect('/error')
+              })
+          } else {
+            console.log(messages, '==============')
+            res.render('user/chats', {
+              userData: req.userData,
+              messages
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          req.flash('error_msg', err.message)
+          res.redirect('/error')
+        })
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/error')
     })
 })
 

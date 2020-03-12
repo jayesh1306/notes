@@ -20,6 +20,7 @@
                         <th>Department</th>
                         <th>Subject</th>
                         <th>Price</th>
+                        <th>Chats</th>
                         <th colspan="2" class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -30,6 +31,7 @@
                         <td><%=requests[i].notes.department %></td>
                         <td><%=requests[i].notes.subject%></td>
                         <td><%=requests[i].price%></td>
+                        <td><a href="/user/orders/chat/<%=requests[i]._id%>"><i class="fa fa-commenting-o"></i></a></td>
                         <%if(requests[i].status == 1){%>
                         <td><a href="/user/requests/approve/<%=requests[i]._id%>"><button
                                     class="btn btn-success">Approve</button></a></td>
