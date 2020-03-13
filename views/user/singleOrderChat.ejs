@@ -1,0 +1,73 @@
+<style>
+    .card::-webkit-scrollbar {
+        width: 0 !important
+    }
+</style>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-8 m-auto">
+            <h3>Chat from here with your seller</h3>
+            <div class="card" style="max-height:400px;overflow:scroll">
+                <div class="card-body">
+                    <input type="hidden" id="order" value="<%=chat[0].order%>">
+                    <input type="hidden" id="seller" value="<%=chat[0].seller%>">
+                    <input type="hidden" id="buyer" value="<%=userData.id%>">
+                    <%for(var i=1;i< chat.length;i++){%>
+                    <%if(chat[i].message.by == userData.id){%>
+                    <p style="text-align: right;margin-bottom: -18px;"><%=chat[i].message.body%>
+                        <small
+                            style="font-size: 10px;"><%=chat[i].message.date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })%></small>
+                    </p>
+                    <span style="font-size: 10px;margin-left: 20px;"></span>
+                    <%}else{%>
+                    <p style="text-align: left;"><%=chat[i].message.body%>
+                        <small
+                            style="font-size: 10px;"><%=chat[i].message.date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })%></small>
+                    </p>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div>
+            <hr>
+            <form onsubmit="return sendData()">
+                <div class="input-group mb-3">
+                    <input autofocus type="text" class="form-control" placeholder="Enter Message" id="message"
+                        aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-md btn-outline-default m-0 px-3 py-2 z-depth-0 waves-effect"
+                            type="submit" id="button-addon2">Send</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+    var socket = io();
+    socket.on('salesReceive', function (data) {
+        data.message.date = Date.now();
+        $('.card-body').append(`<p style="text-align:left">${data.message.body}</p>`)
+
+    })
+    function sendData() {
+        var buyer = document.getElementById('buyer').value;
+        var seller = document.getElementById('seller').value;
+        var order = document.getElementById('order').value;
+        var msg = document.getElementById('message').value;
+        var data = {
+            buyer, seller, order, message: {
+                body: msg, by: buyer
+            }
+        }
+        $(".card").stop().animate({scrollTop: $(".card")[0].scrollHeight}, 1000);
+        $('.card-body').append(`<p style="text-align:right">${msg}</p>`)
+
+        if (msg != '') {
+            socket.emit('orderSend', data);
+        }
+        document.getElementById('message').value = ''
+        return false;
+    }
+</script>

@@ -1,0 +1,18 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-8 m-auto">
+            <h3>Chat with your customers</h3>
+            <hr>
+            <ul class="list-group">
+                <%if(order.length == 0){%>
+                <h3>No orders found</h3>
+                <%}else{%>
+                <%for(var i=0;i< order.length;i++){%>
+                <li class="list-group-item"><a
+                        href="/user/salesChat/<%=order[i]._id%>"><%=order[i].buyer.name%></a></li>
+                <%}%>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+</div>

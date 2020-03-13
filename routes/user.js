@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer')
 const User = require('../models/User')
 const Message = require('../models/Message')
 const Order = require('../models/Order')
+const Chat = require('../models/Chat')
 
 let transporter = nodemailer.createTransport({
   service: 'gmail', // true for 465, false for other ports
@@ -233,56 +234,81 @@ router.get('/orders', (req, res, next) => {
     })
 })
 
-//Chats
-router.get('/orders/chat/:id', (req, res, next) => {
-  Order.findOne({ _id: req.params.id })
+//Order Chats
+router.get('/orderChat', (req, res, next) => {
+  Order.find({ buyer: req.userData.id })
+    .populate('seller')
+    .populate('notes')
     .then(order => {
-      message = {
-        text: 'hiii',
-        by: req.userData.id
-      }
-      Message.find({ $or: [{ buyer: order.buyer }, { seller: order.seller }] })
-        .populate('message.by')
-        .then(messages => {
-          if (messages.length == 0) {
-            var newMessage = new Message({
-              seller: order.seller,
-              buyer: order.buyer
+      console.log(order)
+      res.render('user/orderChat', {
+        userData: req.userData,
+        order
+      })
+    })
+    .catch()
+})
+
+router.get('/orderChat/:id', (req, res, next) => {
+  // buyer == req.userData
+
+  Chat.find({ $and: [{ order: req.params.id }, { buyer: req.userData.id }] })
+    .then(chat => {
+      res.render('user/singleOrderChat', {
+        userData: req.userData,
+        chat
+      })
+    })
+    .catch()
+})
+
+//Sales Chats
+router.get('/salesChat', (req, res, next) => {
+  Order.find({ seller: req.userData.id })
+    .populate('buyer')
+    .populate('seller')
+    .populate('notes')
+    .then(order => {
+      console.log(order)
+      res.render('user/salesChat', {
+        userData: req.userData,
+        order
+      })
+    })
+    .catch()
+})
+
+router.get('/salesChat/:id', (req, res, next) => {
+  // seller == req.userData
+  Chat.find({ $and: [{ order: req.params.id }, { seller: req.userData.id }] })
+    .then(chat => {
+      if (chat.length == 0) {
+        Order.findOne({ _id: req.params.id })
+          .then(order => {
+            var newChat = Chat({
+              order: order._id,
+              buyer: order.buyer,
+              seller: order.seller
             })
-            newMessage
+            newChat
               .save()
-              .then(msg => {
-                msg.seller = order.seller
-                msg.buyer = order.buyer
-                res.render('user/chats', {
+              .then(chat => {
+                res.render('user/singleSalesChat', {
                   userData: req.userData,
-                  messages: msg
+                  chat
                 })
               })
-              .catch(err => {
-                console.log(err)
-                req.flash('error_msg', err.messages)
-                res.redirect('/error')
-              })
-          } else {
-            console.log(messages, '==============')
-            res.render('user/chats', {
-              userData: req.userData,
-              messages
-            })
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          req.flash('error_msg', err.message)
-          res.redirect('/error')
-        })
+              .catch(err => {})
+          })
+          .catch(err => {})
+      }
+      console.log(chat, '-------------')
+      res.render('user/singleSalesChat', {
+        userData: req.userData,
+        chat
+      })
     })
-    .catch(err => {
-      console.log(err)
-      req.flash('error_msg', err.message)
-      res.redirect('/error')
-    })
+    .catch()
 })
 
 //Single notes display to buy
@@ -353,22 +379,36 @@ router.post('/notes/:id/buy', (req, res, next) => {
                 })
                 order
                   .save()
-                  .then(() => {
-                    salesNotes
-                      .updateOne(
-                        { notesId: singleNote[0].notesId._id },
-                        { status: 1 }
-                      )
-                      .then(data => {
-                        req.flash(
-                          'success_msg',
-                          'Thankyou. Your Request has been sent and added to your orders page'
-                        )
-                        res.redirect('/user/orders')
+                  .then(order => {
+                    var newChat = new Chat({
+                      order: order._id,
+                      buyer: req.userData.id,
+                      seller: singleNote[0].userId._id
+                    })
+                    newChat
+                      .save()
+                      .then(chat => {
+                        salesNotes
+                          .updateOne(
+                            { notesId: singleNote[0].notesId._id },
+                            { status: 1 }
+                          )
+                          .then(data => {
+                            req.flash(
+                              'success_msg',
+                              'Thankyou. Your Request has been sent and added to your orders page'
+                            )
+                            res.redirect('/user/orders')
+                          })
+                          .catch(err => {
+                            console.log(err)
+                            req.flash('error_msg', err.message)
+                            res.redirect(`/notes/${req.params.id}`)
+                          })
                       })
                       .catch(err => {
                         console.log(err)
-                        req.flash('error_msg', err.message)
+                        req.flash('error_msg', errors.message)
                         res.redirect(`/notes/${req.params.id}`)
                       })
                   })

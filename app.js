@@ -10,7 +10,7 @@ const path = require('path')
 const flash = require('connect-flash')
 const session = require('express-session')
 const morgan = require('morgan')
-const Message = require('./models/Message')
+const Chat = require('./models/Chat')
 
 //App Initialization
 const app = express()
@@ -19,16 +19,21 @@ const app = express()
 var server = require('http').Server(app)
 var io = require('socket.io')(server)
 io.on('connection', function (socket) {
-  socket.on('message', function (data) {
-    socket.emit('receive', data)
-    var msg = new Message(data)
-    msg.save()
+  socket.on('orderSend', function (data) {
+    var chat = new Chat(data)
+    chat.save()
+    io.emit('orderReceive', data)
+  })
+  socket.on('salesSend', function (data) {
+    var chat = new Chat(data)
+    chat.save()
+    io.emit('salesReceive', data)
   })
 })
 
 //Database Initialization
 mongoose.connect(
-  process.env.MONGO_URL,
+  process.env.MONGO_URI,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, data) => {
     if (err) {
