@@ -14,11 +14,11 @@
                     <input type="hidden" id="buyer" value="<%=userData.id%>">
                     <%for(var i=1;i< chat.length;i++){%>
                     <%if(chat[i].message.by == userData.id){%>
-                    <p style="text-align: right;margin-bottom: -18px;"><%=chat[i].message.body%>
+                    <p style="text-align: right;margin-bottom: -18px;margin-left:20%"><%=chat[i].message.body%>
                         <small
                             style="font-size: 10px;"><%=chat[i].message.date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })%></small>
                     </p>
-                    <span style="font-size: 10px;margin-left: 20px;"></span>
+                    <span style="font-size: 10px;margin-left: 20px;margin-right:20%"></span>
                     <%}else{%>
                     <p style="text-align: left;"><%=chat[i].message.body%>
                         <small
@@ -48,7 +48,8 @@
     var socket = io();
     socket.on('salesReceive', function (data) {
         data.message.date = Date.now();
-        $('.card-body').append(`<p style="text-align:left">${data.message.body}</p>`)
+        $('.card-body').append(`<p style="text-align:left">${data.message.body} <small
+                            style="font-size: 10px;">${data.message.date.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}</small></p>`)
 
     })
     function sendData() {
@@ -62,9 +63,10 @@
             }
         }
         $(".card").stop().animate({scrollTop: $(".card")[0].scrollHeight}, 1000);
-        $('.card-body').append(`<p style="text-align:right">${msg}</p>`)
 
         if (msg != '') {
+            $('.card-body').append(`<p style="text-align:right">${msg} <small
+                            style="font-size: 10px;">${Date.now().toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}</small></p>`)
             socket.emit('orderSend', data);
         }
         document.getElementById('message').value = ''
