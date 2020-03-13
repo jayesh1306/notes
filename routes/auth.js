@@ -59,7 +59,8 @@ router.post('/login', (req, res, next) => {
     })
     .catch(err => {
       console.log(err)
-      res.json({ error: err })
+      req.flash('error_msg', err.message)
+      res.redirect('/error')
     })
 })
 
@@ -133,6 +134,7 @@ router.post('/register', (req, res, next) => {
                   })
               })
               .catch(err => {
+                console.log(err)
                 req.flash('error_msg', err.message)
                 res.redirect('/error')
               })
@@ -152,7 +154,8 @@ router.post('/register', (req, res, next) => {
     })
     .catch(err => {
       console.log(err)
-      res.json(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/error')
     })
 })
 
@@ -166,39 +169,45 @@ router.get('/sendEmail', (req, res, next) => {
 //Post Send Email
 router.post('/sendEmail', (req, res, next) => {
   //Email Service
-  User.findOne({ email: req.body.email }).then(user => {
-    if (!user) {
-      req.flash('error_msg', 'Email Doesn\'t Exist');
-      res.redirect('/auth/login');
-    } else {
-      emailService
-        .sendEmail(req.body.email, null, res)
-        .then(info => {
-          db.getUser(req.body.email)
-            .then(user => {
-              console.log(req.cookies)
-              req.flash('success_msg', 'Sent Email, Please Verify Email')
-              res.cookie('token', 'Bearer ' + info.token).redirect('/auth/login')
-            })
-            .catch(err => {
-              req.flash('error_msg', err.message)
-              res.redirect('/error')
-            })
-        })
-        .catch(err => {
-          req.flash(
-            'error_msg',
-            'Something Went Wrong...Please try again in Sometime'
-          )
-          console.log(err)
-          res.redirect('/auth/login')
-        })
-    }
-  }).catch(err => {
-    console.log(err);
-    req.flash('error_msg', err.message);
-    res.redirect('/auth/sendEmail');
-  });
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (!user) {
+        req.flash('error_msg', "Email Doesn't Exist")
+        res.redirect('/auth/login')
+      } else {
+        emailService
+          .sendEmail(req.body.email, null, res)
+          .then(info => {
+            db.getUser(req.body.email)
+              .then(user => {
+                console.log(req.cookies)
+                req.flash('success_msg', 'Sent Email, Please Verify Email')
+                res
+                  .cookie('token', 'Bearer ' + info.token)
+                  .redirect('/auth/login')
+              })
+              .catch(err => {
+                console.log(err)
+                req.flash('error_msg', err.message)
+                res.redirect('/error')
+              })
+          })
+          .catch(err => {
+            console.log(err)
+            req.flash(
+              'error_msg',
+              'Something Went Wrong...Please try again in Sometime'
+            )
+            console.log(err)
+            res.redirect('/auth/login')
+          })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/auth/sendEmail')
+    })
 })
 
 //Mobile Verification if not verified
@@ -220,6 +229,7 @@ router.get('/mobileVerification', (req, res, next) => {
         })
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/auth/mobile')
     })
@@ -241,6 +251,7 @@ router.post('/mobileVerification', (req, res, next) => {
               res.redirect('/auth/login')
             })
             .catch(error => {
+              console.log(err)
               req.flash(
                 'error_msg',
                 'Phone Number or Code is Invalid....Please try again log in'
@@ -251,7 +262,8 @@ router.post('/mobileVerification', (req, res, next) => {
       })
       .catch(err => {
         console.log(err)
-        res.json(err)
+        req.flash('error_msg', err.message)
+        res.redirect('/auth/mobileVerification')
       })
   } else {
     req.flash(
@@ -278,15 +290,18 @@ router.get('/verify/:token', (req, res, next) => {
           })
           .catch(err => {
             console.log(err)
-            res.status(401).json({ failed: err.message })
+            req.flash('error_msg', err.message)
+            res.redirect('/auth/login')
           })
       })
       .catch(err => {
         console.log(err)
-        res.json({ error: err })
+        req.flash('error_msg', err.message)
+        res.redirect('/auth/login')
       })
   } else {
-    res.json({ verification: 'failed' })
+    req.flash('error_msg', 'Verification Failed')
+    res.redirect('/auth/login')
   }
 })
 
@@ -354,6 +369,7 @@ router.get('/forgotPassword/:token', (req, res, next) => {
         }
       })
       .catch(error => {
+        console.log(err)
         req.flash('error_msg', error.message)
         res.redirect('/auth/forgotPassword')
       })
@@ -373,6 +389,7 @@ router.post('/changePassword', (req, res, next) => {
       res.redirect('/auth/login')
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/auth/forgotPassword')
     })

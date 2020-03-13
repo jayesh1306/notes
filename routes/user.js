@@ -45,6 +45,7 @@ router.get('/dashboard', (req, res, next) => {
       })
     })
     .catch(err => {
+      console.log(err)
       req.flash(
         'error_msg',
         'Something went Wrong. Please try again in sometime'
@@ -63,6 +64,7 @@ router.get('/addNotes', (req, res, next) => {
       })
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/user/addNotes')
     })
@@ -81,6 +83,7 @@ router.get('/sales', (req, res, next) => {
       })
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/user/sales')
     })
@@ -158,6 +161,7 @@ router.get('/requests', (req, res, next) => {
       })
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/user/requests')
     })
@@ -295,9 +299,9 @@ router.get('/notes/:id', (req, res, next) => {
       })
     })
     .catch(err => {
-      res.render('error', {
-        err
-      })
+      console.log(err)
+      req.flash('error_msg', err.message)
+      res.redirect('/notes')
     })
 })
 
@@ -363,11 +367,13 @@ router.post('/notes/:id/buy', (req, res, next) => {
                         res.redirect('/user/orders')
                       })
                       .catch(err => {
+                        console.log(err)
                         req.flash('error_msg', err.message)
                         res.redirect(`/notes/${req.params.id}`)
                       })
                   })
                   .catch(errors => {
+                    console.log(error)
                     req.flash('error_msg', errors.message)
                     res.redirect(`/notes/${req.params.id}`)
                   })
@@ -384,6 +390,7 @@ router.post('/notes/:id/buy', (req, res, next) => {
         })
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', err.message)
       res.redirect('/notes')
     })
@@ -435,6 +442,7 @@ router.post('/addNotes', (req, res, next) => {
       }
     })
     .catch(err => {
+      console.log(err)
       req.flash('error_msg', 'Something went wrong')
       res.redirect('/user/addNotes')
     })
