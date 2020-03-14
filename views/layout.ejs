@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/pied-piper-8-569464.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/pied-piper-8-569464.png"
+        type="image/x-icon">
     <!-- Whatsapp Shairng link icon and detals -->
     <meta name="description" content="Notes Sharing Application is platform to sell or buy the notes at half price">
     <meta property="og:title" content="Notes Application" />
@@ -39,7 +40,8 @@
     <title><%= title %> | Notes Sharing Application</title>
 </head>
 
-<body>
+
+<body onload="if(i==0){$('.card').stop().animate({ scrollTop: $('.card')[0].scrollHeight }, 1000); i++}">
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark primary-color">
 
@@ -109,6 +111,9 @@
         <div class="mt-5">
 
         </div>
+        <script>
+            var i = 0;
+        </script>
 </body>
 
 </html>

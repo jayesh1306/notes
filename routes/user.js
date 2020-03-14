@@ -305,10 +305,11 @@ router.get('/salesChat/:id', (req, res, next) => {
             newChat
               .save()
               .then(chat => {
+                console.log(chat)
                 res.render('user/singleSalesChat', {
                   userData: req.userData,
                   chat,
-                  title: `Chat with ${order.buyer}`
+                  title: `Chat`
                 })
               })
               .catch(err => { })
@@ -319,7 +320,7 @@ router.get('/salesChat/:id', (req, res, next) => {
       res.render('user/singleSalesChat', {
         userData: req.userData,
         chat,
-        title: `Chat with ${chat.buyer}`
+        title: `Chat`
 
       })
     })

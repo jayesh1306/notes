@@ -1,18 +1,30 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-8 m-auto">
-            <h3>Chat with your customers</h3>
+
+            <h3 class="font-weight-bold mb-3 text-center text-lg-left">Chat with your Customer</h3>
             <hr>
-            <ul class="list-group">
-                <%if(order.length == 0){%>
-                <h3>No orders found</h3>
-                <%}else{%>
-                <%for(var i=0;i< order.length;i++){%>
-                <li class="list-group-item"><a
-                        href="/user/salesChat/<%=order[i]._id%>"><%=order[i].buyer.name%></a></li>
+            <%if(order.length == 0){%>
+            <h3>No orders found</h3>
+            <%}else{%>
+            <div class="white z-depth-1 px-3 pt-3 pb-0">
+                <ul class="list-unstyled friend-list">
+                    <%for(var i=0;i< order.length;i++){%>
+                    <li class="lighten-3 p-2 ">
+                        <a href="/user/salesChat/<%=order[i]._id%>" class="d-flex justify-content-between pb-3">
+                            <img src="<%=order[i].buyer.profile%>" alt="avatar"
+                                class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">  
+                            <div class="text-small">
+                                <strong><%=order[i].buyer.name%></strong>
+                                <p class="last-message text-muted">Notes : <%=order[i].notes.subject%></p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
                 <%}%>
-                <%}%>
-            </ul>
+                        <%}%>
+
+            </div>
         </div>
     </div>
 </div>
