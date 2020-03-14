@@ -24,9 +24,13 @@ let transporter = nodemailer.createTransport({
 
 //Get Login Page
 router.get('/login', (req, res, next) => {
-  res.render('authentication/login', {
-    userData: req.userData
-  })
+  if (req.cookies.token) {
+    res.redirect('/user/dashboard');
+  } else {
+    res.render('authentication/login', {
+      userData: req.userData
+    })
+  }
 })
 
 //Post Login

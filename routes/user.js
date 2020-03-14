@@ -215,6 +215,13 @@ router.get('/requests/approve/:id', (req, res, next) => {
     })
 })
 
+router.get('/requests/approve/:id', (req, res, next) => {
+  Order.findOne({ _id: req.params.id })
+    .populate('buyer')
+    .populate('notes')
+})
+
+
 //Get Orders Page
 router.get('/orders', (req, res, next) => {
   Order.find({ buyer: req.userData.id })
@@ -298,9 +305,9 @@ router.get('/salesChat/:id', (req, res, next) => {
                   chat
                 })
               })
-              .catch(err => {})
+              .catch(err => { })
           })
-          .catch(err => {})
+          .catch(err => { })
       }
       console.log(chat, '-------------')
       res.render('user/singleSalesChat', {
@@ -490,6 +497,7 @@ router.post('/addNotes', (req, res, next) => {
 
 //User Logout Route
 router.get('/logout', (req, res, next) => {
+  req.userData = '';
   res.clearCookie('token')
   req.flash('success_msg', 'Successfully Logged Out')
   res.redirect('/auth/login')

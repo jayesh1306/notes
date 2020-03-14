@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: Number,
-    required: true // 1 = pending, 2 = approved, 3 = Delievered
+    required: true // 1 = pending, 2 = approved, 3 = Delievered, 4 == Rejected
   },
   buyer: {
     type: mongoose.Schema.Types.ObjectId,

@@ -31,7 +31,7 @@
                         <td><%=requests[i].notes.department %></td>
                         <td><%=requests[i].notes.subject%></td>
                         <td><%=requests[i].price%></td>
-                        <td><a href="/user/orders/chat/<%=requests[i]._id%>"><i class="fa fa-commenting-o"></i></a></td>
+                        <td><a href="/user/salesChat/<%=requests[i]._id%>"><i class="fa fa-commenting-o"></i></a></td>
                         <%if(requests[i].status == 1){%>
                         <td><a href="/user/requests/approve/<%=requests[i]._id%>"><button
                                     class="btn btn-success">Approve</button></a></td>
