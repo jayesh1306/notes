@@ -24,14 +24,10 @@ let transporter = nodemailer.createTransport({
 
 //Get Login Page
 router.get('/login', (req, res, next) => {
-  if (req.cookies.token) {
-    res.redirect('/user/dashboard');
-  } else {
-    res.render('authentication/login', {
-      userData: req.userData,
-      title: 'Login'
-    })
-  }
+  res.render('authentication/login', {
+    userData: req.userData,
+    title: 'Login'
+  })
 })
 
 //Post Login
@@ -128,7 +124,7 @@ router.post('/register', (req, res, next) => {
                     res.cookie('mobile', '+91' + user.contact)
                     res.render('authentication/mobileVerify', {
                       userData: req.userData,
-                      title : 'Mobile Verification'
+                      title: 'Mobile Verification'
                     })
                   })
                   .catch(error => {
@@ -170,7 +166,7 @@ router.post('/register', (req, res, next) => {
 router.get('/sendEmail', (req, res, next) => {
   res.render('authentication/email', {
     userData: req.userData,
-    title : "Email Verification"
+    title: "Email Verification"
   })
 })
 
@@ -222,7 +218,7 @@ router.post('/sendEmail', (req, res, next) => {
 router.get('/mobile', (req, res, next) => {
   res.render('authentication/mobile', {
     userData: req.userData,
-    title : 'Mobile Verification'
+    title: 'Mobile Verification'
   })
 })
 
@@ -235,7 +231,7 @@ router.get('/mobileVerification', (req, res, next) => {
         .cookie('mobile', '+91' + req.query.contact)
         .render('authentication/mobileVerify', {
           userData: req.userData,
-          title : 'Mobile Verification'
+          title: 'Mobile Verification'
         })
     })
     .catch(err => {
@@ -336,7 +332,7 @@ router.post('/sendSMS', (req, res, next) => {
 router.get('/forgotPassword', (req, res, next) => {
   res.render('authentication/forgotPassword', {
     userData: req.userData,
-    title : 'Forgot Password'
+    title: 'Forgot Password'
   })
 })
 
@@ -376,7 +372,7 @@ router.get('/forgotPassword/:token', (req, res, next) => {
         } else {
           res.render('authentication/changePassword', {
             userData: req.userData,
-            title : 'Change Passsword'
+            title: 'Change Passsword'
           })
         }
       })

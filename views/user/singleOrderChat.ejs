@@ -47,18 +47,20 @@
 <script>
     var socket = io();
     socket.on('salesReceive', function (data) {
+        console.log(data)
         $(".card").stop().animate({ scrollTop: $(".card")[0].scrollHeight }, 1000);
         $('.card-body').append(`<p style="text-align:left">${data.message.body} <small
-                            style="font-size: 10px;">${data.message.date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</small></p>`)
+                            style="font-size: 10px;">${data.message.date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}%></small></p>`)
     })
     function sendData() {
         var buyer = document.getElementById('buyer').value;
         var seller = document.getElementById('seller').value;
         var order = document.getElementById('order').value;
         var msg = document.getElementById('message').value;
+        var date = Date.now();
         var data = {
             buyer, seller, order, message: {
-                body: msg, by: buyer
+                body: msg, by: buyer, date: date
             }
         }
         $(".card").stop().animate({ scrollTop: $(".card")[0].scrollHeight }, 5000);
@@ -70,5 +72,5 @@
         document.getElementById('message').value = ''
         return false;
     }
-    
+
 </script>
