@@ -84,7 +84,7 @@ app.use('/', routes)
 
 //Error Handler
 app.use((req, res, next) => {
-  res.render('error', { userData: req.userData })
+  res.render('error', { userData: req.userData, title :'Error' })
 })
 
 //Port to Listen
