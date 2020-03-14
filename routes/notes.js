@@ -23,21 +23,21 @@ router.get('/', (req, res, next) => {
         if (notes.length < 1) {
           res.render('notes/notes', {
             userData: req.userData,
-            notes: null
+            notes: null,
+            title: 'All Notes to Buy'
           })
         } else {
           res.render('notes/notes', {
             userData: req.userData,
-            notes
+            notes,
+            title: 'All Notes to Buy'
           })
         }
       })
       .catch(err => {
         console.log(err)
-        res.render('error', {
-          err,
-          userData: req.userData
-        })
+        req.flash('error_msg', err.message);
+        res.redirect('/error')
       })
   } else {
     salesNotes
@@ -49,19 +49,22 @@ router.get('/', (req, res, next) => {
         if (notes.length == 0) {
           res.render('notes/notes', {
             userData: res.userData,
-            notes: ''
+            notes: '',
+            title: 'All Notes to Buy'
           })
         } else {
           res.render('notes/notes', {
             userData: res.userData,
-            notes
+            notes,
+            title: 'All Notes to Buy'
+
           })
         }
       })
       .catch(err => {
-        req.flash('error', {
-          userData: req.userData
-        })
+        console.log(err);
+        req.flash('error_msg', err.message);
+        res.redirect('/error')
       })
   }
   // if (req.userData != null) {

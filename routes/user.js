@@ -23,7 +23,8 @@ router.get('/profile', (req, res, next) => {
     .then(user => {
       console.log(user)
       res.render('user/profile', {
-        userData: user[0]
+        userData: user[0],
+        title: user[0].name
       })
     })
     .catch(err => {
@@ -42,7 +43,8 @@ router.get('/dashboard', (req, res, next) => {
     .then(user => {
       console.log(user)
       res.render('user/profile', {
-        userData: user[0]
+        userData: user[0],
+        title: user[0].name
       })
     })
     .catch(err => {
@@ -61,7 +63,8 @@ router.get('/addNotes', (req, res, next) => {
     .then(notes => {
       res.render('user/addNotes', {
         userData: req.userData,
-        notes
+        notes,
+        title: "Create Order"
       })
     })
     .catch(err => {
@@ -80,7 +83,8 @@ router.get('/sales', (req, res, next) => {
     .then(sales => {
       res.render('user/sales', {
         userData: req.userData,
-        sales
+        sales,
+        title: "Sales Notes"
       })
     })
     .catch(err => {
@@ -101,7 +105,8 @@ router.get('/sales/edit/:id', (req, res, next) => {
       console.log(note)
       res.render('user/editNotes', {
         userData: req.userData,
-        note
+        note,
+        title: `Edit ${note.subject}`
       })
     })
     .catch(err => {
@@ -158,7 +163,8 @@ router.get('/requests', (req, res, next) => {
       console.log(requests)
       res.render('user/requests', {
         userData: req.userData,
-        requests
+        requests,
+        title: "Requests for your Notes"
       })
     })
     .catch(err => {
@@ -215,11 +221,6 @@ router.get('/requests/approve/:id', (req, res, next) => {
     })
 })
 
-router.get('/requests/approve/:id', (req, res, next) => {
-  Order.findOne({ _id: req.params.id })
-    .populate('buyer')
-    .populate('notes')
-})
 
 
 //Get Orders Page
@@ -231,7 +232,8 @@ router.get('/orders', (req, res, next) => {
       console.log(orders, req.userData.id)
       res.render('user/orders', {
         userData: req.userData,
-        orders
+        orders,
+        title: "Orders"
       })
     })
     .catch(err => {
@@ -250,7 +252,8 @@ router.get('/orderChat', (req, res, next) => {
       console.log(order)
       res.render('user/orderChat', {
         userData: req.userData,
-        order
+        order,
+        title: `Chat with your sellers`
       })
     })
     .catch()
@@ -263,7 +266,8 @@ router.get('/orderChat/:id', (req, res, next) => {
     .then(chat => {
       res.render('user/singleOrderChat', {
         userData: req.userData,
-        chat
+        chat,
+        title: `Chat with ${chat[0].seller}`
       })
     })
     .catch()
@@ -279,7 +283,8 @@ router.get('/salesChat', (req, res, next) => {
       console.log(order)
       res.render('user/salesChat', {
         userData: req.userData,
-        order
+        order,
+        title: `Chat wiht your customers`
       })
     })
     .catch()
@@ -302,7 +307,8 @@ router.get('/salesChat/:id', (req, res, next) => {
               .then(chat => {
                 res.render('user/singleSalesChat', {
                   userData: req.userData,
-                  chat
+                  chat,
+                  title: `Chat with ${order.buyer}`
                 })
               })
               .catch(err => { })
@@ -312,7 +318,9 @@ router.get('/salesChat/:id', (req, res, next) => {
       console.log(chat, '-------------')
       res.render('user/singleSalesChat', {
         userData: req.userData,
-        chat
+        chat,
+        title: `Chat with ${chat.buyer}`
+
       })
     })
     .catch()
@@ -328,7 +336,8 @@ router.get('/notes/:id', (req, res, next) => {
       res.render('notes/buyNotes', {
         note: note[0].notesId,
         price: note[0].price,
-        userData: req.userData
+        userData: req.userData,
+        title: note[0].subject
       })
     })
     .catch(err => {
@@ -441,13 +450,6 @@ router.post('/notes/:id/buy', (req, res, next) => {
       req.flash('error_msg', err.message)
       res.redirect('/notes')
     })
-})
-
-//Add Sales Notes
-router.get('/addNotes', (req, res, next) => {
-  res.render('user/notes', {
-    userData: req.userData
-  })
 })
 
 //Post method to Add Sales NOtes

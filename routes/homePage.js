@@ -5,7 +5,8 @@ const router = express.Router()
 //Get HomePage
 router.get('/', (req, res, next) => {
 	res.render('index', {
-		userData: req.userData
+		userData: req.userData,
+		title : 'Welcome'
 	})
 })
 

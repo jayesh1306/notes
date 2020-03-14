@@ -16,7 +16,8 @@ const router = express.Router()
 //Error Route
 router.get('/error', (req, res, next) => {
 	res.render('error', {
-		userData: req.userData
+		userData: req.userData,
+		title : 'Error'
 	})
 })
 
@@ -28,7 +29,8 @@ router.post('/welcome', (req, res, next) => {
 //About Section
 router.use('/about', checkAuth, (req, res, next) => {
 	res.render('about/about', {
-		userData: req.userData
+		userData: req.userData,
+		title : "About Us"
 	})
 })
 
@@ -45,7 +47,8 @@ router.use('/', checkAuth, home)
 
 router.get('/addNotes', (req, res, next) => {
 	res.render('addNotes', {
-		userData: req.userData
+		userData: req.userData,
+		title :"Add Notes"
 	})
 })
 

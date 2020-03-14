@@ -14,7 +14,8 @@ let transporter = nodemailer.createTransport({
 //Get Contact page
 router.get('/', (req, res, next) => {
   res.render('contact/contact', {
-    userData: req.userData
+    userData: req.userData,
+    title :'Contact Us'
   })
 })
 
@@ -39,7 +40,8 @@ router.post('/', (req, res, next) => {
           } else {
             req.flash('success_msg', 'Successfully Sent')
             res.render('contact/contact', {
-              userData: req.userData
+              userData: req.userData,
+              title : 'Contact Us'
             })
           }
         }

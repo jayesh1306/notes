@@ -28,7 +28,8 @@ router.get('/login', (req, res, next) => {
     res.redirect('/user/dashboard');
   } else {
     res.render('authentication/login', {
-      userData: req.userData
+      userData: req.userData,
+      title: 'Login'
     })
   }
 })
@@ -71,7 +72,8 @@ router.post('/login', (req, res, next) => {
 //Get Register Page
 router.get('/register', (req, res, next) => {
   res.render('authentication/register', {
-    userData: req.userData
+    userData: req.userData,
+    title: 'Register'
   })
 })
 
@@ -125,7 +127,8 @@ router.post('/register', (req, res, next) => {
                     res.cookie('token', 'Bearer ' + token)
                     res.cookie('mobile', '+91' + user.contact)
                     res.render('authentication/mobileVerify', {
-                      userData: req.userData
+                      userData: req.userData,
+                      title : 'Mobile Verification'
                     })
                   })
                   .catch(error => {
@@ -166,7 +169,8 @@ router.post('/register', (req, res, next) => {
 //Send email if note verified
 router.get('/sendEmail', (req, res, next) => {
   res.render('authentication/email', {
-    userData: req.userData
+    userData: req.userData,
+    title : "Email Verification"
   })
 })
 
@@ -217,7 +221,8 @@ router.post('/sendEmail', (req, res, next) => {
 //Mobile Verification if not verified
 router.get('/mobile', (req, res, next) => {
   res.render('authentication/mobile', {
-    userData: req.userData
+    userData: req.userData,
+    title : 'Mobile Verification'
   })
 })
 
@@ -229,7 +234,8 @@ router.get('/mobileVerification', (req, res, next) => {
       res
         .cookie('mobile', '+91' + req.query.contact)
         .render('authentication/mobileVerify', {
-          userData: req.userData
+          userData: req.userData,
+          title : 'Mobile Verification'
         })
     })
     .catch(err => {
@@ -329,7 +335,8 @@ router.post('/sendSMS', (req, res, next) => {
 //Get frogot password Page
 router.get('/forgotPassword', (req, res, next) => {
   res.render('authentication/forgotPassword', {
-    userData: req.userData
+    userData: req.userData,
+    title : 'Forgot Password'
   })
 })
 
@@ -368,7 +375,8 @@ router.get('/forgotPassword/:token', (req, res, next) => {
           res.redirect('/auth/register')
         } else {
           res.render('authentication/changePassword', {
-            userData: req.userData
+            userData: req.userData,
+            title : 'Change Passsword'
           })
         }
       })
