@@ -48,8 +48,9 @@
     var socket = io();
     socket.on('salesReceive', function (data) {
         data.message.date = Date.now();
+        $(".card").stop().animate({ scrollTop: $(".card")[0].scrollHeight }, 1000);
         $('.card-body').append(`<p style="text-align:left">${data.message.body} <small
-                            style="font-size: 10px;">${data.message.date.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}</small></p>`)
+                            style="font-size: 10px;">${data.message.date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</small></p>`)
 
     })
     function sendData() {
@@ -62,11 +63,11 @@
                 body: msg, by: buyer
             }
         }
-        $(".card").stop().animate({scrollTop: $(".card")[0].scrollHeight}, 1000);
+        $(".card").stop().animate({ scrollTop: $(".card")[0].scrollHeight }, 1000);
 
         if (msg != '') {
             $('.card-body').append(`<p style="text-align:right">${msg} <small
-                            style="font-size: 10px;">${Date.now().toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}</small></p>`)
+                            style="font-size: 10px;">${Date.now().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</small></p>`)
             socket.emit('orderSend', data);
         }
         document.getElementById('message').value = ''
