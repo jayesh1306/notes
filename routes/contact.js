@@ -101,10 +101,7 @@ router.post('/', (req, res, next) => {
             res.redirect('/contact')
           } else {
             req.flash('success_msg', 'Successfully Sent')
-            res.render('contact/contact', {
-              userData: req.userData,
-              title: 'Contact Us'
-            })
+            res.redirect('/contact')
           }
         }
       )
