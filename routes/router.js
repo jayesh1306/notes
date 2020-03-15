@@ -104,7 +104,6 @@ router.get('/admin/dashboard', (req, res, next) => {
 			console.log(td, date)
 			if ((td - d) <= 7) {
 				activeUser++
-				console.log(activeUser, '<=7')
 			}
 		}
 		console.log(activeUser)

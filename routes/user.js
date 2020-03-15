@@ -221,7 +221,24 @@ router.get('/requests/approve/:id', (req, res, next) => {
     })
 })
 
-
+router.get('/requests/reject/:id', (req, res, next) => {
+  Order.updateOne({ _id: req.params.id }, { status: 4 }).then(order => {
+    Order.findOne({ _id: req.params.id }).then(orders => {
+      salesNotes.updateOne({ notesId: orders.notes }, { status: 0 }).then(salesNotes => {
+        req.flash('success_msg', 'Rejected Notes Successfully');
+        res.redirect('/user/requests');
+      })
+    }).catch(err => {
+      console.log(err);
+      req.flash('error_msg', err.message)
+      res.redirect('/requests');
+    });
+  }).catch(err => {
+    console.log(err);
+    req.flash('error_msg', err.message)
+    res.redirect('/requests');
+  });
+})
 
 //Get Orders Page
 router.get('/orders', (req, res, next) => {
