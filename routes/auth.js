@@ -16,8 +16,8 @@ const router = express.Router()
 let transporter = nodemailer.createTransport({
   service: 'gmail', // true for 465, false for other ports
   auth: {
-    user: 'prajapatijayesh.beis.16@acharya.ac.in', // generated ethereal user
-    pass: 'jscajyutkqmgymur' // generated ethereal password
+    user: 'jayesh203.jp@gmail.com', // generated ethereal user
+    pass: 'nqdbhfhiwxtumfhh' // generated ethereal password
   }
 })
 

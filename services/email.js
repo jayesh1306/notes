@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken')
 let transporter = nodemailer.createTransport({
 	service: 'gmail', // true for 465, false for other ports
 	auth: {
-		user: 'prajapatijayesh.beis.16@acharya.ac.in', // generated ethereal user
-		pass: 'jscajyutkqmgymur' // generated ethereal password
+		user: 'jayesh203.jp@gmail.com', // generated ethereal user
+		pass: 'nqdbhfhiwxtumfhh' // generated ethereal password
 	}
 })
 
@@ -107,7 +107,7 @@ exports.sendEmail = (email, req, res) => {
 			transporter.sendMail(
 				{
 					from: req.body.email,
-					to: `prajapatijayesh.beis.16@acharya.ac.in`,
+					to: `jayesh203.jp@gmail.com`,
 					subject: 'Complaint from User : ' + req.body.name,
 					html: req.body.msg
 				},
