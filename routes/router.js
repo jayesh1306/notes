@@ -104,14 +104,10 @@ router.get('/admin/dashboard', (req, res, next) => {
 			console.log(td, date)
 			if ((td - d) <= 7) {
 				activeUser++
-			} else {
-				if (activeUser == 0) {
-					continue;
-				} else {
-					activeUser--;
-				}
+				console.log(activeUser, '<=7')
 			}
 		}
+		console.log(activeUser)
 		res.render('adminDashboard', {
 			userData: req.userData,
 			totalUser,
