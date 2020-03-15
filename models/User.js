@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
   createdOn: {
     type: Date,
     default: Date.now()
+  },
+  lastLogin: {
+    type: Date,
+    default: Date.now()
+  },
+  isBlocked: {
+    type: Boolean,
+    default: 0 //0 = not blocked, 1 = Blocked
   }
 })
 

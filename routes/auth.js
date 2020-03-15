@@ -54,8 +54,14 @@ router.post('/login', (req, res, next) => {
             expiresIn: '24h'
           }
         )
-        res.cookie('token', 'Bearer ' + token)
-        res.redirect('/user/dashboard')
+        User.updateOne({ _id: user[0]._id }, { lastLogin: Date.now() }).then(usre => {
+          res.cookie('token', 'Bearer ' + token)
+          res.redirect('/user/dashboard')
+        }).catch(err => {
+          console.log(err);
+          req.flash('error_msg', err.message);
+          res.redirect('/auth/login');
+        });
       }
     })
     .catch(err => {

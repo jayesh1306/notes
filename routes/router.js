@@ -12,12 +12,13 @@ const user = require('./user')
 const contact = require('./contact')
 const notes = require('./notes')
 const router = express.Router()
+const db = require('../db/queries')
 
 //Error Route
 router.get('/error', (req, res, next) => {
 	res.render('error', {
 		userData: req.userData,
-		title : 'Error'
+		title: 'Error'
 	})
 })
 
@@ -30,7 +31,7 @@ router.post('/welcome', (req, res, next) => {
 router.use('/about', checkAuth, (req, res, next) => {
 	res.render('about/about', {
 		userData: req.userData,
-		title : "About Us"
+		title: "About Us"
 	})
 })
 
@@ -48,7 +49,7 @@ router.use('/', checkAuth, home)
 router.get('/addNotes', (req, res, next) => {
 	res.render('addNotes', {
 		userData: req.userData,
-		title :"Add Notes"
+		title: "Add Notes"
 	})
 })
 
@@ -71,6 +72,67 @@ router.post('/addNotes', (req, res, next) => {
 			req.flash('error_msg', err.message)
 			res.redirect('/addNotes')
 		})
+})
+
+router.get('/admin', (req, res, next) => {
+	res.render('admin', {
+		userData: req.userData
+	})
+})
+
+router.post('/admin', (req, res, next) => {
+	if (req.body.password == 'admin12345') {
+		res.redirect('/admin/dashboard');
+	} else {
+		res.redirect('/admin')
+	}
+})
+
+router.get('/admin/dashboard', (req, res, next) => {
+	db.getAllUser().then(user => {
+		var totalUser = user.length;
+		var activeUser = 0;
+		var blockedUser = 0;
+		for (var i = 0; i < user.length; i++) {
+			if (user[i].isBlocked == 1) {
+				blockedUser++;
+			}
+			var date = new Date(user[i].lastLogin);
+			d = date.getDate();
+			var todaysDate = new Date(Date.now());
+			var td = todaysDate.getDate();
+			console.log(td, date)
+			if ((td - d) <= 7) {
+				activeUser++
+			} else {
+				if (activeUser == 0) {
+					continue;
+				} else {
+					activeUser--;
+				}
+			}
+		}
+		res.render('adminDashboard', {
+			userData: req.userData,
+			totalUser,
+			activeUser,
+			blockedUser
+		})
+	}).catch(err => {
+		console.log(err);
+		req.flash('error_msg', err.message);
+		res.redirect('/error')
+	});
+})
+
+router.get('/getAllUser', (req, res, next) => {
+	db.getAllUser().then(user => {
+
+		var totalUser = user.length
+		res.status(200).json(totalUser)
+	}).catch(err => {
+		res.status(404).json(err)
+	});
 })
 
 //Home Route
