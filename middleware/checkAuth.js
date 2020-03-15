@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const localStorage = require('localStorage')
 
 module.exports = (req, res, next) => {
 	try {

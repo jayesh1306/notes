@@ -1,5 +1,4 @@
 const express = require('express')
-const localStorage = require('localStorage')
 const jwt = require('jsonwebtoken')
 const emailService = require('../services/email')
 const smsService = require('../services/twilio')
@@ -363,7 +362,7 @@ router.post('/forgotPassword', (req, res, next) => {
 //Verify email to change password
 router.get('/forgotPassword/:token', (req, res, next) => {
   var decoded = jwt.verify(
-    localStorage.getItem('token').split(' ')[1],
+    req.cookies.token.split(' ')[1],
     'secret'
   )
   if (decoded.exp < parseInt(Date.now() / 1000)) {
@@ -393,7 +392,7 @@ router.get('/forgotPassword/:token', (req, res, next) => {
 //Change Password
 router.post('/changePassword', (req, res, next) => {
   var pass = sha256(req.body.password1)
-  var email = jwt.verify(localStorage.getItem('token').split(' ')[1], 'secret')
+  var email = jwt.verify(req.cookies.token.split(' ')[1], 'secret')
     .email
   console.log(email)
   User.updateOne({ email: email }, { password: pass })

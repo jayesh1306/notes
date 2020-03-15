@@ -74,7 +74,7 @@ exports.forgotPassword = email => {
 			if (err) {
 				reject(err)
 			} else {
-				localStorage.setItem('token', 'Bearer ' + token);
+				res.cookie('token', 'Bearer ' + token)
 				resolve(data)
 			}
 		})

@@ -2,7 +2,6 @@ const twilio = require('twilio')(
 	'ACf3c4de10ed34fba14e4161e03736cf8e',
 	'fc75bef3cd0cfe150fa49ece65b28648'
 )
-const localStorage = require('localStorage')
 
 
 exports.sendSMS = contact => {
