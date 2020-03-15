@@ -63,7 +63,7 @@ exports.sendEmail = (email, req, res) => {
 								  <table border="0" cellpadding="0" cellspacing="0" width="100%">
 									<tr>
 									  <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
-										&reg; Copyright @ Notes Sharing Application 2020<br/>
+										&reg; Copyright @ Notes Sharing Application 2020. Made with ❤️<br/>
 									  </td>
 									  <td align="right" width="25%">
 										<table border="0" cellpadding="0" cellspacing="0">
@@ -150,7 +150,7 @@ exports.forgotPassword = (email, res) => {
 								<tr>
 									<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
 										<img src="https://cdn.iconscout.com/icon/free/png-256/pied-piper-11-599410.png" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
-										<h3>Notes Sharing Application</h3>
+										<h3>Notes Sharing Application. Made with ❤️</h3>
 										</td>
 								</tr>
 								<tr>
