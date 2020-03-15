@@ -57,7 +57,7 @@ exports.sendEmail = (email, req, res) => {
 	}
 }
 
-exports.forgotPassword = email => {
+exports.forgotPassword = (email, res) => {
 	return new Promise((resolve, reject) => {
 		const token = jwt.sign({
 			email: email

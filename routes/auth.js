@@ -344,7 +344,7 @@ router.get('/forgotPassword', (req, res, next) => {
 //Post request Forgot password
 router.post('/forgotPassword', (req, res, next) => {
   emailService
-    .forgotPassword(req.body.email)
+    .forgotPassword(req.body.email, res)
     .then(data => {
       req.flash(
         'success_msg',
