@@ -7,6 +7,9 @@
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
         <v-list-item-group class="ml-3" active-class="deep-purple--text text--accent-4">
+          <v-list-item to="/">
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
           <v-list-item v-if="auth" to="/user/dashboard">
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item>

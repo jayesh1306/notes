@@ -8,8 +8,6 @@ const state = {
 
 const mutations = {
     authUser(state, data) {
-        console.log(data);
-
         state.token = data.token;
         state.userId = data.userId
         router.replace('/user/dashboard')
@@ -24,7 +22,7 @@ const getters = {
     isAuthenticated(state) {
         return state.token !== null
     },
-    async user(state) {
+    user(state) {
         axios.get(`/getUser/${state.userId}`).then(response => {
             return response.data;
         }).catch(err => {

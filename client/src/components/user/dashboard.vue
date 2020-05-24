@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-row :align="alignment" :justify="justify">
-          <v-card class="mx-auto" max-width="434" tile>
+          <v-card :loading="loading" class="mx-auto" max-width="434" tile>
             <v-img height="100%" src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
               <v-row align="end" class="fill-height">
                 <v-col align-self="start" class="pa-0" cols="12">
@@ -35,16 +35,13 @@ export default {
     return {
       alignment: "center",
       justify: "center",
-      user: null
+      loading: false
     };
   },
-  async created() {
-    this.user = this.$store
-      .dispatch("getUser")
-      .then(user => {
-        this.user = user;
-      })
-      .catch();
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    }
   }
 };
 </script>

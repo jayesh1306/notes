@@ -15,6 +15,8 @@ export default {
         component: Dashboard
     }],
     beforeEnter(to, from, next) {
+        console.log(to, from, next);
+
         if (!store.state.auth.token) {
             next('/auth/login');
         } else {

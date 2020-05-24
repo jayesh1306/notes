@@ -2,12 +2,19 @@ import Container from '../container/MainContainer';
 
 
 import Contact from '../components/contact'
+import Home from '../components/home'
+
 
 export default {
     path: '/',
     component: Container,
     children: [{
-        path: '/contact',
-        component: Contact
-    }]
+            path: '/',
+            component: Home
+        },
+        {
+            path: '/contact',
+            component: Contact
+        },
+    ]
 }
